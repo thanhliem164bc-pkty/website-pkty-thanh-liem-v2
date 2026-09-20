@@ -5,7 +5,7 @@ body{font-family:system-ui;margin:0;background:#fbf7ef;color:#30251d}header{back
 </style></head><body>
 <header><span>PHÒNG KHÁM THÚ Y PKTY THANH LIÊM — QUẢN TRỊ</span><a href="../" style="color:#fff">Xem website</a></header>
 <main>
-<section id="login" class="card"><h2>Đăng nhập quản trị</h2><label>Tài khoản</label><input id="user" value="admin"><label>Mật khẩu</label><input id="pass" type="password"><button class="primary" onclick="login()">Đăng nhập</button><div id="loginMsg"></div></section>
+<section id="login" class="card"><h2>Đăng nhập quản trị</h2><label>Tài khoản</label><input id="user" value="admin"><label>Mật khẩu</label><input id="pass" type="password"><button class="primary" onclick="doLogin()">Đăng nhập</button><div id="loginMsg"></div></section>
 <section id="panel" class="hidden">
 <div class="card"><button class="primary" onclick="showTab('dashboard')">📊 Tổng quan</button><button class="secondary" onclick="showTab('content')">Nội dung</button><button class="secondary" onclick="showTab('appointments')">📅 Lịch hẹn</button><button class="secondary" onclick="showTab('media')">🖼️ Hình ảnh</button><button class="secondary" onclick="showTab('notify')">🔔 Thông báo</button><button class="secondary" onclick="logout()">Đăng xuất</button></div>
 
@@ -49,8 +49,35 @@ body{font-family:system-ui;margin:0;background:#fbf7ef;color:#30251d}header{back
 <script>
 let d={};const fields=["name","phone","zalo","facebook","address","maps","heroTitle","heroText","about","bookingText"];
 async function api(url,opt={}){let r=await fetch(url,{headers:{"Content-Type":"application/json"},...opt});let j=await r.json();if(!r.ok)throw new Error(j.error||"Lỗi");return j}
-async function check(){try{let m=await api("/api/me");if(m.loggedIn){login.classList.add("hidden");panel.classList.remove("hidden");d=await api("/api/site");render();loadDashboard();loadAppointments();loadNotify()}}catch(e){}}
-async function login(){try{await api("/api/login",{method:"POST",body:JSON.stringify({username:user.value,password:pass.value})});check()}catch(e){loginMsg.textContent=e.message}}
+async function check(){
+  try{
+    const m=await api("/api/me");
+    if(m.loggedIn){
+      document.getElementById("login").classList.add("hidden");
+      document.getElementById("panel").classList.remove("hidden");
+      d=await api("/api/site");
+      render();
+      loadDashboard();
+      loadAppointments();
+      loadNotify();
+    }
+  }catch(e){}
+}
+
+async function doLogin(){
+  try{
+    await api("/api/login",{
+      method:"POST",
+      body:JSON.stringify({
+        username:document.getElementById("user").value,
+        password:document.getElementById("pass").value
+      })
+    });
+    await check();
+  }catch(e){
+    document.getElementById("loginMsg").textContent=e.message;
+  }
+}
 function render(){fields.forEach(k=>document.getElementById(k).value=d[k]||"");renderList("services");renderList("spa")}
 function renderList(k){document.getElementById(k).innerHTML=(d[k]||[]).map((x,i)=>`<div class=item><input value="${esc(x)}" oninput="d['${k}'][${i}]=this.value"><button class=danger onclick="d['${k}'].splice(${i},1);renderList('${k}')">Xóa</button></div>`).join("")}
 function add(k){d[k]=d[k]||[];d[k].push("Dịch vụ mới");renderList(k)}
