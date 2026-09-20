@@ -1,0 +1,76 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quản trị — PKTY Thanh Liêm</title>
+<style>
+body{font-family:system-ui;margin:0;background:#fbf7ef;color:#30251d}header{background:#6f452c;color:#fff;padding:18px 22px;font-weight:800;display:flex;justify-content:space-between}main{max-width:1100px;margin:25px auto;padding:0 16px}.card{background:#fff;padding:20px;border-radius:15px;margin-bottom:18px;border:1px solid #eadfce}input,textarea,select{width:100%;padding:10px;border:1px solid #d9cbb8;border-radius:9px;box-sizing:border-box;font:inherit}label{font-weight:700;display:block;margin:10px 0 5px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}button{padding:9px 13px;border:0;border-radius:9px;font-weight:800;cursor:pointer;margin:3px}.primary{background:#6f452c;color:#fff}.secondary{background:#efe2cf;color:#6f452c}.danger{background:#f5d8d3;color:#8c3024}.hidden{display:none}.item{display:flex;gap:8px;margin:8px 0}.item input{flex:1}.appt{border:1px solid #eadfce;border-radius:12px;padding:14px;margin:10px 0}.top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.badge{display:inline-block;padding:5px 9px;border-radius:20px;background:#efe2cf}.tabs button{margin-right:6px}.muted{color:#776b61;font-size:13px}.msg{font-weight:700}.preview{max-width:220px;max-height:140px;border-radius:10px;border:1px solid #ddd;margin-top:10px}.ok{color:#2e6a35;font-weight:700}@media(max-width:850px){.grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<header><span>PHÒNG KHÁM THÚ Y PKTY THANH LIÊM — QUẢN TRỊ</span><a href="../" style="color:#fff">Xem website</a></header>
+<main>
+<section id="login" class="card"><h2>Đăng nhập quản trị</h2><label>Tài khoản</label><input id="user" value="admin"><label>Mật khẩu</label><input id="pass" type="password"><button class="primary" onclick="login()">Đăng nhập</button><div id="loginMsg"></div></section>
+<section id="panel" class="hidden">
+<div class="card"><button class="primary" onclick="showTab('dashboard')">📊 Tổng quan</button><button class="secondary" onclick="showTab('content')">Nội dung</button><button class="secondary" onclick="showTab('appointments')">📅 Lịch hẹn</button><button class="secondary" onclick="showTab('media')">🖼️ Hình ảnh</button><button class="secondary" onclick="showTab('notify')">🔔 Thông báo</button><button class="secondary" onclick="logout()">Đăng xuất</button></div>
+
+
+<section id="dashboard" class="hidden">
+<div class="grid" style="grid-template-columns:repeat(4,1fr)">
+  <div class="card"><div class="muted">Lịch hôm nay</div><h2 id="sToday">0</h2></div>
+  <div class="card"><div class="muted">Chưa xác nhận</div><h2 id="sNew">0</h2></div>
+  <div class="card"><div class="muted">Đã xác nhận</div><h2 id="sConfirmed">0</h2></div>
+  <div class="card"><div class="muted">Tổng lịch hẹn</div><h2 id="sTotal">0</h2></div>
+</div>
+<div class="card"><div class="top"><h2>📅 Lịch sắp tới</h2><button class="secondary" onclick="loadDashboard()">↻ Cập nhật</button></div><div id="upcoming"></div></div>
+</section>
+
+<section id="content">
+<div class="card"><button class="primary" onclick="save()">Lưu thay đổi</button><span id="msg" class="msg"></span></div>
+<div class="grid"><section class="card"><h2>Thông tin phòng khám</h2><label>Tên</label><input id="name"><label>Số điện thoại</label><input id="phone"><label>Zalo</label><input id="zalo"><label>Facebook</label><input id="facebook"><label>Địa chỉ</label><input id="address"><label>Google Maps</label><input id="maps"></section>
+<section class="card"><h2>Trang chủ</h2><label>Tiêu đề</label><input id="heroTitle"><label>Mô tả</label><textarea id="heroText"></textarea><label>Giới thiệu</label><textarea id="about"></textarea><label>Nội dung đặt lịch</label><textarea id="bookingText"></textarea></section></div>
+<section class="card"><h2>Dịch vụ</h2><div id="services"></div><button class="secondary" onclick="add('services')">+ Thêm</button></section>
+<section class="card"><h2>Dịch vụ Spa</h2><div id="spa"></div><button class="secondary" onclick="add('spa')">+ Thêm</button></section>
+</section>
+
+<section id="appointments" class="hidden"><div class="card"><div class=top><h2>📅 Lịch hẹn</h2><button class=secondary onclick="loadAppointments()">↻ Làm mới</button></div><div id=apptList></div></div></section>
+
+<section id="media" class="hidden"><div class="card"><h2>🖼️ Thư viện hình ảnh</h2><p class=muted>Website hiện đã được cập nhật thêm bộ ảnh thú cưng và hoạt động tại PKTY Thanh Liêm. Các ảnh này đang hiển thị trong mục <b>Hình ảnh</b> ngoài trang chủ.</p><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px">
+<a href="../mat-tien-phong-kham.jpg" target="_blank"><img src="../mat-tien-phong-kham.jpg" style="width:100%;height:150px;object-fit:cover;border-radius:10px"></a>
+<a href="../uploads/gallery/thu-cung-01.jpg" target="_blank"><img src="../uploads/gallery/thu-cung-01.jpg" style="width:100%;height:150px;object-fit:cover;border-radius:10px"></a>
+<a href="../uploads/gallery/doi-ngu-thanh-liem.jpg" target="_blank"><img src="../uploads/gallery/doi-ngu-thanh-liem.jpg" style="width:100%;height:150px;object-fit:cover;border-radius:10px"></a>
+<a href="../uploads/gallery/thu-cung-02.jpg" target="_blank"><img src="../uploads/gallery/thu-cung-02.jpg" style="width:100%;height:150px;object-fit:cover;border-radius:10px"></a>
+<a href="../uploads/gallery/thu-cung-03.jpg" target="_blank"><img src="../uploads/gallery/thu-cung-03.jpg" style="width:100%;height:150px;object-fit:cover;border-radius:10px"></a>
+<a href="../uploads/gallery/thu-cung-04.jpg" target="_blank"><img src="../uploads/gallery/thu-cung-04.jpg" style="width:100%;height:150px;object-fit:cover;border-radius:10px"></a>
+<a href="../uploads/gallery/thu-cung-05.jpg" target="_blank"><img src="../uploads/gallery/thu-cung-05.jpg" style="width:100%;height:150px;object-fit:cover;border-radius:10px"></a>
+<a href="../uploads/gallery/thu-cung-06.jpg" target="_blank"><img src="../uploads/gallery/thu-cung-06.jpg" style="width:100%;height:150px;object-fit:cover;border-radius:10px"></a>
+<a href="../uploads/gallery/spa-thu-cung-01.jpg" target="_blank"><img src="../uploads/gallery/spa-thu-cung-01.jpg" style="width:100%;height:150px;object-fit:cover;border-radius:10px"></a>
+<a href="../uploads/gallery/thu-cung-07.jpg" target="_blank"><img src="../uploads/gallery/thu-cung-07.jpg" style="width:100%;height:150px;object-fit:cover;border-radius:10px"></a>
+<a href="../uploads/gallery/thu-cung-08.jpg" target="_blank"><img src="../uploads/gallery/thu-cung-08.jpg" style="width:100%;height:150px;object-fit:cover;border-radius:10px"></a>
+</div><p class=muted style="margin-top:14px">Bạn có thể tiếp tục gửi thêm ảnh; mình sẽ bổ sung vào thư viện theo cùng bố cục.</p></div></section>
+
+<section id="notify" class="hidden"><div class="card"><h2>🔔 Thông báo khi có lịch mới</h2><p class=muted>Hệ thống dùng webhook. Bạn có thể kết nối một dịch vụ nhận webhook (ví dụ Discord/Make/Zapier) để nhận thông báo trên điện thoại.</p><label>Webhook URL</label><input id=webhook placeholder="https://..."><label><input id=notifyEnabled type=checkbox style="width:auto"> Bật thông báo</label><br><button class=primary onclick="saveNotify()">Lưu cài đặt</button><span id=notifyMsg class=msg></span></div></section>
+</section></main>
+<script>
+let d={};const fields=["name","phone","zalo","facebook","address","maps","heroTitle","heroText","about","bookingText"];
+async function api(url,opt={}){let r=await fetch(url,{headers:{"Content-Type":"application/json"},...opt});let j=await r.json();if(!r.ok)throw new Error(j.error||"Lỗi");return j}
+async function check(){try{let m=await api("/api/me");if(m.loggedIn){login.classList.add("hidden");panel.classList.remove("hidden");d=await api("/api/site");render();loadDashboard();loadAppointments();loadNotify()}}catch(e){}}
+async function login(){try{await api("/api/login",{method:"POST",body:JSON.stringify({username:user.value,password:pass.value})});check()}catch(e){loginMsg.textContent=e.message}}
+function render(){fields.forEach(k=>document.getElementById(k).value=d[k]||"");renderList("services");renderList("spa")}
+function renderList(k){document.getElementById(k).innerHTML=(d[k]||[]).map((x,i)=>`<div class=item><input value="${esc(x)}" oninput="d['${k}'][${i}]=this.value"><button class=danger onclick="d['${k}'].splice(${i},1);renderList('${k}')">Xóa</button></div>`).join("")}
+function add(k){d[k]=d[k]||[];d[k].push("Dịch vụ mới");renderList(k)}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+async function save(){fields.forEach(k=>d[k]=document.getElementById(k).value);try{d=await api("/api/site",{method:"PUT",body:JSON.stringify(d)});msg.textContent=" ✓ Đã lưu";setTimeout(()=>msg.textContent="",2500)}catch(e){msg.textContent=e.message}}
+
+async function loadDashboard(){
+  try{
+    const s=await api("/api/dashboard");
+    sToday.textContent=s.today;sNew.textContent=s.newCount;sConfirmed.textContent=s.confirmed;sTotal.textContent=s.total;
+    upcoming.innerHTML=s.upcoming.length?s.upcoming.map(x=>`<div class=appt><div class=top><strong>${esc(x.date)} — ${esc(x.time)} · ${esc(x.petName)}</strong><span class=badge>${esc(x.status)}</span></div><div><b>${esc(x.ownerName)}</b> · <a href="tel:${esc(x.phone)}">${esc(x.phone)}</a></div><div>${esc(x.service||"Chưa chọn dịch vụ")} · ${esc(x.petType||"")}</div><div style="margin-top:6px"><a href="tel:${esc(x.phone)}"><button class=primary>📞 Gọi</button></a> <a href="https://zalo.me/${esc(x.phone.replace(/\\D/g,''))}" target="_blank"><button class=secondary>💬 Zalo</button></a> <button class=secondary onclick="showTab('appointments')">Chi tiết</button></div></div>`).join(""):"<p>Chưa có lịch sắp tới.</p>";
+  }catch(e){upcoming.innerHTML="<p>"+e.message+"</p>"}
+}
+
+function showTab(t){["dashboard","content","appointments","media","notify"].forEach(x=>document.getElementById(x).classList.toggle("hidden",x!==t));if(t==="dashboard")loadDashboard();if(t==="appointments")loadAppointments();if(t==="notify")loadNotify()}
+async function loadAppointments(){try{let a=await api("/api/appointments");apptList.innerHTML=a.length?a.map(x=>`<div class=appt><div class=top><strong>${esc(x.date)} — ${esc(x.time)} · ${esc(x.petName)}</strong><span class=badge>${esc(x.status)}</span></div><div><b>Khách:</b> ${esc(x.ownerName)} · <a href="tel:${esc(x.phone)}">${esc(x.phone)}</a></div><div><b>Thú cưng:</b> ${esc(x.petType||"")} · <b>Dịch vụ:</b> ${esc(x.service||"")}</div>${x.note?`<div><b>Ghi chú:</b> ${esc(x.note)}</div>`:""}<div class=muted>${new Date(x.createdAt).toLocaleString("vi-VN")}</div><select onchange="updateStatus('${x.id}',this.value)"><option ${x.status==="Mới"?"selected":""}>Mới</option><option ${x.status==="Đã xác nhận"?"selected":""}>Đã xác nhận</option><option ${x.status==="Đã khám"?"selected":""}>Đã khám</option><option ${x.status==="Đã hủy"?"selected":""}>Đã hủy</option></select><button class=danger onclick="deleteAppt('${x.id}')">Xóa</button></div>`).join(""):"<p>Chưa có lịch hẹn.</p>"}catch(e){apptList.innerHTML="<p>"+e.message+"</p>"}}
+async function updateStatus(id,status){await api("/api/appointments/"+id,{method:"PUT",body:JSON.stringify({status})});loadAppointments()}
+async function deleteAppt(id){if(confirm("Xóa lịch hẹn này?")){await api("/api/appointments/"+id,{method:"DELETE"});loadAppointments()}}
+async function loadNotify(){try{let s=await api("/api/settings");webhook.value=s.notifyWebhook||"";notifyEnabled.checked=!!s.notifyEnabled}catch(e){}}
+async function saveNotify(){try{await api("/api/settings",{method:"PUT",body:JSON.stringify({notifyWebhook:webhook.value,notifyEnabled:notifyEnabled.checked})});notifyMsg.textContent=" ✓ Đã lưu";setTimeout(()=>notifyMsg.textContent="",2500)}catch(e){notifyMsg.textContent=e.message}}
+async function uploadImage(){const f=image.files[0];if(!f)return uploadMsg.textContent="Chưa chọn ảnh";const fd=new FormData();fd.append("image",f);try{let r=await fetch("/api/upload",{method:"POST",body:fd});let j=await r.json();if(!r.ok)throw new Error(j.error);uploadMsg.innerHTML=`<span class=ok>Đã tải: ${esc(j.url)}</span>`;preview.src=j.url;preview.style.display="block"}catch(e){uploadMsg.textContent=e.message}}
+async function logout(){await api("/api/logout",{method:"POST"});location.reload()}check();
+</script></body></html>

@@ -1,0 +1,19 @@
+{
+  "name": "PHÒNG KHÁM THÚ Y PKTY THANH LIÊM",
+  "phone": "0938 848 238",
+  "zalo": "https://zalo.me/0938848238",
+  "facebook": "https://www.facebook.com/profile.php?id=61593452407647&locale=vi_VN",
+  "address": "128 Lê Thị Hà, Xã Hóc Môn, TP.HCM",
+  "maps": "https://maps.app.goo.gl/1pYxKcbj68PE8qyX8",
+  "heroTitle": "Người bạn nhỏ, luôn được yêu thương.",
+  "heroText": "",
+  "about": "",
+  "bookingText": "",
+  "services": [
+    "Điều trị thú cưng",
+    "Tiêm phòng",
+    "Spa thú cưng",
+    "Petshop"
+  ],
+  "spa": []
+}

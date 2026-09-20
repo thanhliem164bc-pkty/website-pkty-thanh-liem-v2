@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phòng Khám Thú Y PKTY Thanh Liêm | Hóc Môn, TP.HCM</title>
+  <meta name="description" content="Phòng khám Thú y PKTY Thanh Liêm - Điều trị, tiêm phòng, spa và petshop tại Hóc Môn, TP.HCM.">
+  <style>
+    :root{
+      --brown:#5b351f; --brown2:#7b4b2b; --gold:#d8a51f; --cream:#fffaf1;
+      --text:#2f2925; --muted:#756b64; --white:#fff; --shadow:0 14px 40px rgba(60,38,22,.12);
+      --radius:22px;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:#fff}
+    a{text-decoration:none;color:inherit} img{max-width:100%;display:block}
+    .container{width:min(1120px,92%);margin:auto}
+    header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid #eee}
+    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:900;color:var(--brown)}
+    .brand-mark{width:46px;height:46px;border:2px solid var(--brown);border-radius:50%;display:grid;place-items:center;font-size:24px;background:var(--cream)}
+    .brand small{display:block;font-size:11px;letter-spacing:1.3px;color:var(--gold)}
+    nav{display:flex;gap:25px;font-weight:700;font-size:14px}
+    nav a:hover{color:var(--gold)}
+    .call{background:var(--brown);color:#fff;padding:12px 18px;border-radius:999px;font-weight:800;box-shadow:0 8px 20px rgba(91,53,31,.2)}
+    .hero{background:linear-gradient(120deg,#fffaf1 0%,#fff 55%,#f5eadc 100%);padding:64px 0 72px}
+    .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:52px;align-items:center}
+    .eyebrow{color:var(--gold);font-weight:900;letter-spacing:2px;text-transform:uppercase;font-size:13px}
+    h1{font-size:clamp(42px,6vw,72px);line-height:.98;margin:14px 0 22px;color:var(--brown);letter-spacing:-2.5px}
+    .hero p{font-size:18px;line-height:1.7;color:var(--muted);max-width:620px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 20px;border-radius:999px;font-weight:850}
+    .btn-primary{background:var(--brown);color:#fff}.btn-secondary{border:1px solid #dbcdbd;background:#fff}
+    .hero-photo{border-radius:30px;overflow:hidden;box-shadow:var(--shadow);transform:rotate(1deg);border:8px solid #fff}
+    .hero-photo img{aspect-ratio:4/3;object-fit:cover}
+    .badges{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+    .badge{padding:9px 13px;border-radius:999px;background:#fff;border:1px solid #eadfce;font-size:13px;font-weight:800}
+    section{padding:82px 0}
+    .section-head{max-width:680px;margin-bottom:34px}
+    .section-head h2{font-size:clamp(30px,4vw,46px);line-height:1.05;color:var(--brown);margin:8px 0 12px}
+    .section-head p{color:var(--muted);line-height:1.7}
+    .services{background:var(--cream)}
+    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .card{background:#fff;border:1px solid #eee2d4;border-radius:var(--radius);padding:26px;box-shadow:0 8px 26px rgba(60,38,22,.06);transition:.25s}
+    .card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+    .icon{font-size:34px;margin-bottom:15px}.card h3{margin:0 0 9px;color:var(--brown)} .card p{margin:0;color:var(--muted);line-height:1.65;font-size:14px}
+    .about{display:grid;grid-template-columns:.9fr 1.1fr;gap:50px;align-items:center}
+    .about-box{background:var(--brown);color:#fff;border-radius:30px;padding:42px;position:relative;overflow:hidden}
+    .about-box:after{content:"🐾";position:absolute;font-size:150px;right:-15px;bottom:-45px;opacity:.09}
+    .about-box h3{font-size:32px;margin:0 0 15px}.about-box p{line-height:1.8;color:#f1e6da}
+    .list{display:grid;gap:15px}.list div{display:flex;gap:13px;align-items:flex-start}.check{width:28px;height:28px;flex:none;border-radius:50%;display:grid;place-items:center;background:#f6e8c5;color:#8c6811;font-weight:900}
+    .gallery{display:grid;grid-template-columns:1.35fr .65fr;gap:16px}.gallery img{width:100%;height:100%;object-fit:cover;border-radius:22px}.gallery-main{min-height:430px}.gallery-side{display:grid;gap:16px}.placeholder{background:#f3ede4;border-radius:22px;display:grid;place-items:center;color:#9a8b7c;font-weight:800;min-height:205px;text-align:center;padding:20px}
+    .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.gallery-card{position:relative;display:block;overflow:hidden;border-radius:22px;min-height:260px;background:#f3ede4;text-decoration:none;box-shadow:0 10px 28px rgba(73,45,28,.08)}.gallery-card img{width:100%;height:100%;min-height:260px;object-fit:cover;display:block;transition:transform .35s ease}.gallery-card:hover img{transform:scale(1.045)}.gallery-card span{position:absolute;left:12px;right:12px;bottom:12px;background:rgba(48,37,29,.78);color:#fff;padding:10px 12px;border-radius:12px;font-size:13px;font-weight:800;backdrop-filter:blur(5px)}.gallery-feature{grid-column:span 2;grid-row:span 2;min-height:536px}.gallery-feature img{min-height:536px}
+
+    .contact{background:var(--cream)}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .contact-card{background:#fff;border-radius:26px;padding:30px;border:1px solid #eadfce}
+    .contact-row{display:flex;gap:15px;margin:18px 0}.contact-row b{display:block;margin-bottom:3px}.contact-row span{color:var(--muted);line-height:1.5}
+    .map{min-height:360px;border-radius:26px;background:#e7dfd3;display:grid;place-items:center;text-align:center;padding:30px;color:var(--brown);border:1px solid #d9cdbd}
+    footer{background:#2e2018;color:#eee;padding:34px 0}.footer{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.footer p{margin:5px 0;color:#cfc2b8}
+
+    .booking{background:linear-gradient(135deg,#5b351f,#7b4b2b);color:#fff}
+    .booking-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:34px;align-items:start}
+    .booking-copy h2{color:#fff;margin-top:8px}.booking-copy p{color:#eadfd4;line-height:1.7}
+    .booking-points{display:grid;gap:12px;margin-top:24px}.booking-points div{display:flex;gap:10px;align-items:center}
+    .booking-form{background:#fff;color:var(--text);border-radius:26px;padding:28px;box-shadow:var(--shadow)}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:13px;font-weight:800;color:var(--brown)}
+    .field input,.field select,.field textarea{width:100%;border:1px solid #ded3c7;border-radius:13px;padding:12px 13px;font:inherit;outline:none;background:#fff}
+    .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(216,165,31,.12)}
+    .submit-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.booking-note{font-size:12px;color:#8a7d72;margin-top:12px}
+    .success{display:none;background:#f4ecd9;border-radius:14px;padding:13px;margin-top:14px;color:#5b351f;font-size:14px;line-height:1.55}
+    @media(max-width:900px){.booking-grid{grid-template-columns:1fr}}
+    @media(max-width:560px){.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+
+    .pricing{background:#fff}
+    .price-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 24px}
+    .price-tab{border:1px solid #decfbd;background:#fff;color:var(--brown);padding:11px 17px;border-radius:999px;font-weight:850;cursor:pointer}
+    .price-tab.active{background:var(--brown);color:#fff}
+    .price-panel{display:none}.price-panel.active{display:block}
+    .price-group{margin:28px 0}.price-group h3{color:var(--brown);font-size:22px;margin:0 0 12px}
+    .table-wrap{overflow-x:auto;border:1px solid #eadfce;border-radius:18px;box-shadow:0 8px 24px rgba(60,38,22,.05)}
+    table{width:100%;border-collapse:collapse;min-width:780px;background:#fff;font-size:13px}
+    th,td{padding:12px 10px;border-bottom:1px solid #eee5da;text-align:center;vertical-align:top}
+    th{background:#f6ecdc;color:var(--brown);font-weight:900;white-space:nowrap}
+    td:nth-child(2),th:nth-child(2){text-align:left;min-width:260px}
+    tr:last-child td{border-bottom:0}.price{font-weight:900;color:var(--brown);white-space:nowrap}
+    .price-note{font-size:12px;color:var(--muted);margin:10px 2px 0}
+    .simple-price{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+    .simple-price .item{border:1px solid #eadfce;border-radius:16px;padding:15px 17px;background:#fffaf1;display:flex;justify-content:flex-start;gap:15px;font-weight:750;color:var(--brown)}
+    @media(max-width:600px){.simple-price{grid-template-columns:1fr}.price-group h3{font-size:19px}}
+    .floating{position:fixed;right:18px;bottom:18px;z-index:30;display:flex;flex-direction:column;gap:10px}.float-btn{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--brown);color:#fff;font-size:22px;box-shadow:0 10px 25px rgba(0,0,0,.2)}
+    @media(max-width:900px){.hero-grid,.about,.contact-grid{grid-template-columns:1fr}.grid4{grid-template-columns:repeat(2,1fr)}nav{display:none}.hero{padding-top:40px}.hero-photo{transform:none}}
+    @media(max-width:900px){.gallery-grid{grid-template-columns:repeat(2,1fr)}.gallery-feature{grid-column:span 2;grid-row:span 1;min-height:360px}.gallery-feature img{min-height:360px}}
+    @media(max-width:560px){.grid4{grid-template-columns:1fr}.nav{height:68px}.brand-mark{width:40px;height:40px}.brand{font-size:14px}.hero p{font-size:16px}section{padding:60px 0}.gallery-grid{grid-template-columns:1fr}.gallery-card,.gallery-card img{min-height:300px}.gallery-feature{grid-column:span 1;min-height:340px}.gallery-feature img{min-height:340px}.call{padding:10px 14px;font-size:13px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <a class="brand" href="#top"><span class="brand-mark">🐾</span><span>PKTY THANH LIÊM<small>PHÒNG KHÁM THÚ Y</small></span></a>
+    <nav>
+      <a href="#dich-vu">Dịch vụ</a><a href="#dat-lich">Đặt lịch</a><a href="#gioi-thieu">Về chúng tôi</a><a href="#hinh-anh">Hình ảnh</a><a href="#bang-gia">Dịch vụ</a><a href="#lien-he">Liên hệ</a><a href="https://www.facebook.com/profile.php?id=61593452407647&locale=vi_VN" target="_blank" rel="noopener">Facebook</a>
+    <a href="admin/" class="admin-link" style="font-size:.9em;opacity:.85">Quản trị</a></nav>
+    <a class="call" href="tel:0938848238">📞 0938 848 238</a>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">Chăm sóc thú cưng tận tâm</div>
+      <h1>Người bạn nhỏ,<br>luôn được yêu thương.</h1>
+      <p>Phòng Khám Thú Y PKTY Thanh Liêm đồng hành cùng gia đình bạn trong chăm sóc, điều trị và làm đẹp cho thú cưng tại Hóc Môn, TP.HCM.</p>
+      <div class="actions"><a class="btn btn-primary" href="#dat-lich">📅 Đặt lịch khám</a><a class="btn btn-secondary" href="#dich-vu">Xem dịch vụ</a></div>
+      <div class="badges"><span class="badge">🩺 Điều trị</span><span class="badge">💉 Tiêm phòng</span><span class="badge">✨ Spa</span><span class="badge">🛍️ Petshop</span></div>
+    </div>
+    <div class="hero-photo"><img src="mat-tien-phong-kham.jpg" alt="Mặt tiền Phòng khám Thú y PKTY Thanh Liêm"></div>
+  </div>
+</section>
+
+<section id="dich-vu" class="services">
+  <div class="container">
+    <div class="section-head"><div class="eyebrow">Dịch vụ</div><h2>Một địa chỉ cho mọi nhu cầu của thú cưng</h2><p>Thiết kế dịch vụ theo hướng thuận tiện, thân thiện và đặt sự an toàn của thú cưng lên hàng đầu.</p></div>
+    <div class="grid4">
+      <article class="card"><div class="icon">🩺</div><h3>Điều trị</h3><p>Khám và chăm sóc sức khỏe cho chó, mèo khi có dấu hiệu bất thường hoặc cần theo dõi.</p></article>
+      <article class="card"><div class="icon">💉</div><h3>Tiêm phòng</h3><p>Đồng hành cùng lịch tiêm chủng và chăm sóc phòng bệnh cho thú cưng.</p></article>
+      <article class="card"><div class="icon">✨</div><h3>Spa thú cưng</h3><p>Vệ sinh, tắm và chăm sóc ngoại hình giúp bé luôn sạch sẽ, thoải mái.</p></article>
+      <article class="card"><div class="icon">🛍️</div><h3>Petshop</h3><p>Các sản phẩm hỗ trợ chăm sóc và nuôi dưỡng thú cưng tại nhà.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="gioi-thieu">
+  <div class="container about">
+    <div class="about-box"><h3>PKTY Thanh Liêm — gần gũi như một người bạn</h3><p>Không gian phòng khám được xây dựng để khách hàng dễ dàng đưa thú cưng đến thăm khám, chăm sóc và làm đẹp trong cùng một địa điểm.</p></div>
+    <div><div class="eyebrow">Về chúng tôi</div><h2>Chăm sóc bằng sự tận tâm</h2><div class="list">
+      <div><span class="check">✓</span><div><b>Tư vấn rõ ràng</b><br><span>Giải thích tình trạng và hướng chăm sóc để chủ nuôi dễ theo dõi.</span></div></div>
+      <div><span class="check">✓</span><div><b>Không gian thân thiện</b><br><span>Ưu tiên trải nghiệm thoải mái cho cả thú cưng và gia đình.</span></div></div>
+      <div><span class="check">✓</span><div><b>Tiện lợi nhiều dịch vụ</b><br><span>Khám chữa bệnh, tiêm phòng, spa và petshop tại một địa chỉ.</span></div></div>
+    </div></div>
+  </div>
+</section>
+
+<section id="hinh-anh" style="padding-top:20px">
+  <div class="container">
+    <div class="section-head"><div class="eyebrow">Hình ảnh</div><h2>Khoảnh khắc tại PKTY Thanh Liêm</h2><p>Một số hình ảnh thú cưng, chăm sóc và đội ngũ tại PKTY Thanh Liêm. Nhấn vào ảnh để xem kích thước lớn.</p></div>
+    <div class="gallery-grid">
+      <a class="gallery-card gallery-feature" href="mat-tien-phong-kham.jpg" target="_blank" rel="noopener"><img src="mat-tien-phong-kham.jpg" alt="Mặt tiền Phòng khám Thú y PKTY Thanh Liêm"></a>
+      <a class="gallery-card" href="uploads/gallery/thu-cung-01.jpg" target="_blank" rel="noopener"><img src="uploads/gallery/thu-cung-01.jpg" alt="Thú cưng sau khi chăm sóc tại PKTY Thanh Liêm"></a>
+      <a class="gallery-card" href="uploads/gallery/doi-ngu-thanh-liem.jpg" target="_blank" rel="noopener"><img src="uploads/gallery/doi-ngu-thanh-liem.jpg" alt="Đội ngũ PKTY Thanh Liêm"></a>
+      <a class="gallery-card" href="uploads/gallery/thu-cung-02.jpg" target="_blank" rel="noopener"><img src="uploads/gallery/thu-cung-02.jpg" alt="Thú cưng được tạo hình"></a>
+      <a class="gallery-card" href="uploads/gallery/thu-cung-03.jpg" target="_blank" rel="noopener"><img src="uploads/gallery/thu-cung-03.jpg" alt="Thú cưng đáng yêu"></a>
+      <a class="gallery-card" href="uploads/gallery/thu-cung-04.jpg" target="_blank" rel="noopener"><img src="uploads/gallery/thu-cung-04.jpg" alt="Thú cưng sau grooming"></a>
+      <a class="gallery-card" href="uploads/gallery/thu-cung-05.jpg" target="_blank" rel="noopener"><img src="uploads/gallery/thu-cung-05.jpg" alt="Thú cưng sau khi chăm sóc"></a>
+      <a class="gallery-card" href="uploads/gallery/thu-cung-06.jpg" target="_blank" rel="noopener"><img src="uploads/gallery/thu-cung-06.jpg" alt="Thú cưng tại PKTY Thanh Liêm"></a>
+      <a class="gallery-card" href="uploads/gallery/spa-thu-cung-01.jpg" target="_blank" rel="noopener"><img src="uploads/gallery/spa-thu-cung-01.jpg" alt="Chăm sóc và chải lông thú cưng"></a>
+      <a class="gallery-card" href="uploads/gallery/thu-cung-07.jpg" target="_blank" rel="noopener"><img src="uploads/gallery/thu-cung-07.jpg" alt="Thú cưng sau tạo hình"></a>
+      <a class="gallery-card" href="uploads/gallery/thu-cung-08.jpg" target="_blank" rel="noopener"><img src="uploads/gallery/thu-cung-08.jpg" alt="Thú cưng sau grooming"></a>
+    </div>
+  </div>
+</section>
+
+
+
+
+<section id="bang-gia" class="pricing">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Dịch vụ</div>
+      <h2>Các dịch vụ tại PKTY Thanh Liêm</h2>
+      <p id="servicesIntro">Khám chữa bệnh, chăm sóc sức khỏe và Spa & Grooming cho chó mèo.</p>
+    </div>
+
+    <div class="price-tabs" role="tablist">
+      <button class="price-tab active" data-panel="p-dich-vu" type="button">🩺 Dịch vụ thú y</button>
+      <button class="price-tab" data-panel="p-spa" type="button">✨ Spa & Grooming</button>
+    </div>
+
+    <div id="p-dich-vu" class="price-panel active">
+      <div class="simple-price" id="serviceList"></div>
+    </div>
+
+    <div id="p-spa" class="price-panel">
+      <div class="price-group"><h3>🐶 Spa & Grooming</h3><div class="simple-price" id="spaList"></div></div>
+    </div>
+
+    <p class="price-note">Vui lòng liên hệ phòng khám để được tư vấn dịch vụ phù hợp cho thú cưng.</p>
+  </div>
+</section>
+
+<section id="dat-lich" class="booking">
+  <div class="container booking-grid">
+    <div class="booking-copy">
+      <div class="eyebrow" style="color:#f1c84b">Đặt lịch nhanh</div>
+      <h2>Đặt lịch cho bé chỉ trong 1 phút</h2>
+      <p>Chọn dịch vụ, thời gian dự kiến và để lại thông tin. Sau khi điền form, bạn có thể gửi ngay thông tin cho phòng khám qua Zalo hoặc gọi điện xác nhận.</p>
+      <div class="booking-points">
+        <div>✓ Không cần tạo tài khoản</div>
+        <div>✓ Tối ưu cho điện thoại</div>
+        <div>✓ Có nút gọi và Zalo ngay sau khi điền form</div>
+      </div>
+    </div>
+    <form class="booking-form" id="bookingForm">
+      <div class="form-grid">
+        <div class="field"><label for="owner">Tên của bạn *</label><input id="owner" required placeholder="Nguyễn Văn A"></div>
+        <div class="field"><label for="phone">Số điện thoại *</label><input id="phone" type="tel" required placeholder="09xx xxx xxx"></div>
+        <div class="field"><label for="pet">Tên thú cưng</label><input id="pet" placeholder="Ví dụ: Bông"></div>
+        <div class="field"><label for="type">Thú cưng</label><select id="type"><option>Chó</option><option>Mèo</option><option>Khác</option></select></div>
+        <div class="field"><label for="service">Dịch vụ *</label><select id="service" required><option value="">-- Chọn dịch vụ --</option></select></div>
+        <div class="field"><label for="date">Ngày dự kiến *</label><input id="date" type="date" required></div>
+        <div class="field"><label for="time">Giờ dự kiến</label><input id="time" type="time"></div>
+        <div class="field full"><label for="note">Ghi chú</label><textarea id="note" rows="3" placeholder="Mô tả ngắn tình trạng hoặc yêu cầu của bé..."></textarea></div>
+      </div>
+      <div class="submit-row">
+        <button class="btn btn-primary" type="submit" style="border:0;cursor:pointer">📅 Tạo thông tin đặt lịch</button>
+        <a class="btn btn-secondary" href="tel:0938848238">☎ Gọi xác nhận</a>
+      </div>
+      <div class="success" id="bookingResult"></div>
+      <div class="booking-note">* Đây là form đặt lịch nhanh trên website; lịch hẹn được xác nhận chính thức sau khi phòng khám phản hồi.</div>
+    </form>
+  </div>
+</section>
+
+<section id="lien-he" class="contact">
+  <div class="container">
+    <div class="section-head"><div class="eyebrow">Liên hệ</div><h2>Đưa bé đến PKTY Thanh Liêm</h2></div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-row"><div>📍</div><div><b>Địa chỉ</b><span>128 Lê Thị Hà, Hóc Môn, TP.HCM</span></div></div>
+        <div class="contact-row"><div>📞</div><div><b>Điện thoại</b><span><a href="tel:0938848238">0938 848 238</a></span></div></div>
+        <div class="contact-row"><div>💬</div><div><b>Zalo</b><span><a href="https://zalo.me/0938848238" target="_blank" rel="noopener">Nhắn tin qua Zalo: 0938 848 238</a></span></div></div>
+        <div class="contact-row"><div>📘</div><div><b>Facebook</b><span><a href="https://www.facebook.com/profile.php?id=61593452407647&locale=vi_VN" target="_blank" rel="noopener">Trang Facebook Phòng Khám Thú Y PKTY Thanh Liêm</a></span></div></div>
+        <a class="btn btn-primary" href="https://maps.app.goo.gl/1pYxKcbj68PE8qyX8" target="_blank" rel="noopener">📍 Mở Google Maps</a>
+      </div>
+      <a class="map" href="https://maps.app.goo.gl/1pYxKcbj68PE8qyX8" target="_blank" rel="noopener">
+        <div><div style="font-size:52px">📍</div><h3>Xem vị trí trên Google Maps</h3><p>Nhấn để mở bản đồ và chỉ đường đến phòng khám.</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="container footer"><div><b>🐾 PHÒNG KHÁM THÚ Y PKTY THANH LIÊM</b><p>Chăm sóc tận tâm — đồng hành cùng thú cưng.</p></div><div><b>0938 848 238</b><p>128 Lê Thị Hà, Hóc Môn, TP.HCM</p></div></div></footer>
+<div class="floating"><a class="float-btn" href="#dat-lich" aria-label="Đặt lịch">📅</a><a class="float-btn" href="tel:0938848238" aria-label="Gọi điện">☎</a><a class="float-btn" href="https://zalo.me/0938848238" target="_blank" rel="noopener" aria-label="Zalo">Z</a><a class="float-btn" href="https://www.facebook.com/profile.php?id=61593452407647&locale=vi_VN" target="_blank" rel="noopener" aria-label="Facebook">f</a><a class="float-btn" href="https://maps.app.goo.gl/1pYxKcbj68PE8qyX8" target="_blank" rel="noopener" aria-label="Google Maps">⌖</a></div>
+
+<script>
+(function(){
+  const form=document.getElementById('bookingForm');
+  const result=document.getElementById('bookingResult');
+  const date=document.getElementById('date');
+  const today=new Date(); today.setMinutes(today.getMinutes()-today.getTimezoneOffset());
+  date.min=today.toISOString().slice(0,10);
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    const owner=document.getElementById('owner').value.trim();
+    const phone=document.getElementById('phone').value.trim();
+    const pet=document.getElementById('pet').value.trim() || 'Chưa nhập';
+    const type=document.getElementById('type').value;
+    const service=document.getElementById('service').value;
+    const d=document.getElementById('date').value;
+    const t=document.getElementById('time').value || 'Chưa chọn';
+    const note=document.getElementById('note').value.trim() || 'Không có';
+    const formatted=d ? d.split('-').reverse().join('/') : 'Chưa chọn';
+
+    result.style.display='block';
+    result.innerHTML='<b>Đã tạo thông tin đặt lịch!</b><br>'+
+      '👤 '+owner+' · ☎ '+phone+'<br>'+
+      '🐾 '+pet+' ('+type+') · 🩺 '+service+'<br>'+
+      '📅 '+formatted+' · ⏰ '+t+'<br>'+
+      '📝 '+note+'<br><br>'+
+      '<a href="tel:0938848238" style="font-weight:900">☎ Gọi 0938 848 238 để xác nhận</a> · '+
+      '<a href="https://zalo.me/0938848238" target="_blank" rel="noopener" style="font-weight:900">💬 Mở Zalo</a>';
+    result.scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+})();
+</script>
+
+
+<script>
+document.querySelectorAll('.price-tab').forEach(function(tab){
+  tab.addEventListener('click',function(){
+    document.querySelectorAll('.price-tab').forEach(function(t){t.classList.remove('active')});
+    document.querySelectorAll('.price-panel').forEach(function(p){p.classList.remove('active')});
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.panel).classList.add('active');
+  });
+});
+</script>
+
+
+<script>
+(function(){
+  const KEY='thanhliem_site_content_v1';
+  const defaults={
+    name:'PHÒNG KHÁM THÚ Y PKTY THANH LIÊM', phone:'0938 848 238',
+    zalo:'https://zalo.me/0938848238', facebook:'https://www.facebook.com/profile.php?id=61593452407647&locale=vi_VN',
+    address:'128 Lê Thị Hà, Xã Hóc Môn, TP.HCM', maps:'https://maps.app.goo.gl/1pYxKcbj68PE8qyX8',
+    heroTitle:'Người bạn nhỏ, luôn được yêu thương.', heroText:'', about:'', bookingText:'',
+    services:['Lưu chuồng','Điều trị','Truyền dịch','Mổ lấy thai','Mổ viêm tử cung','Sổ giun','Thiêu huỷ chó mèo','Chụp X-quang','Xét nghiệm Sinh lý','Xét nghiệm Sinh hoá','Xét nghiệm Tổng quát','Sưởi đèn','Thở oxy','Cắt đuôi chó con','Siêu âm','Vệ sinh vết thương','Soi da, soi phân'],
+    spa:['Tắm vệ sinh cơ bản','Cạo lông body','Combo Grooming trọn gói','Tắm vệ sinh cơ bản cho mèo','Combo Tắm + Cạo lông mát / sư tử','Combo Tắm + Cắt tỉa thẩm mỹ','Cắt & mài móng','Vệ sinh tai & nhổ lông tai','Vắt tuyến hôi','Cạo 4 chân','Cạo lông vệ sinh','Gỡ lông rối']
+  };
+  let d=defaults; try{d={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){}
+  const setText=(id,v)=>{const e=document.getElementById(id);if(e&&v)e.textContent=v};
+  setText('heroTitle',d.heroTitle);
+  const heroP=document.querySelector('.hero p'); if(heroP&&d.heroText) heroP.textContent=d.heroText;
+  const aboutP=document.querySelector('#gioi-thieu p'); if(aboutP&&d.about) aboutP.textContent=d.about;
+  const bookingP=document.querySelector('#dat-lich .section-head p'); if(bookingP&&d.bookingText) bookingP.textContent=d.bookingText;
+  const serviceList=document.getElementById('serviceList');
+  if(serviceList) serviceList.innerHTML=(d.services||[]).map(x=>'<div class="item"><span>🐾 '+x+'</span></div>').join('');
+  const spaList=document.getElementById('spaList');
+  if(spaList) spaList.innerHTML=(d.spa||[]).map(x=>'<div class="item"><span>✨ '+x+'</span></div>').join('');
+  const sel=document.getElementById('service');
+  if(sel) (d.services||[]).concat(d.spa||[]).forEach(x=>{const o=document.createElement('option');o.textContent=x;o.value=x;sel.appendChild(o)});
+  document.querySelectorAll('a[href^="tel:"]').forEach(a=>{a.href='tel:'+d.phone.replace(/\D/g,'')});
+  document.querySelectorAll('a[href*="zalo.me"]').forEach(a=>a.href=d.zalo);
+  document.querySelectorAll('a[href*="facebook.com"]').forEach(a=>a.href=d.facebook);
+  document.querySelectorAll('a[href*="maps.app.goo.gl"]').forEach(a=>a.href=d.maps);
+  document.title=d.name+' — Chăm sóc thú cưng';
+  document.querySelectorAll('header a, .footer a').forEach(a=>{if(a.textContent.trim()==='PHÒNG KHÁM THÚ Y PKTY THANH LIÊM')a.textContent=d.name});
+  const phoneText=document.querySelector('.contact-phone'); if(phoneText) phoneText.textContent=d.phone;
+  const addr=document.querySelector('.contact-address'); if(addr) addr.textContent=d.address;
+})();
+</script>
+
+<script>
+(function(){
+  const form=document.querySelector('#bookingForm, form[action*="dat-lich"]') || document.querySelector('form');
+  if(!form) return;
+  // Only attach when the form has recognizable booking fields.
+  const inputs=Array.from(form.querySelectorAll('input,textarea,select'));
+  const hasBooking=inputs.some(x=>/phone|sdt|điện|date|ngày|pet|thú|owner|chủ/i.test((x.name||"")+" "+(x.id||"")+" "+(x.placeholder||"")));
+  if(!hasBooking) return;
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    const val=(patterns)=>{for(const p of patterns){const x=inputs.find(el=>p.test((el.name||"")+" "+(el.id||"")+" "+(el.placeholder||"")+" "+(el.labels?.[0]?.textContent||""))); if(x)return x.value}return ""};
+    const payload={
+      ownerName:val([/owner|chủ|họ.*tên/i]),
+      phone:val([/phone|sđt|điện.*thoại/i]),
+      petName:val([/pet.*name|tên.*thú|tên.*bé/i]),
+      petType:val([/pet.*type|loài|giống/i]),
+      service:val([/service|dịch vụ/i]),
+      date:val([/^date$|ngày/i]),
+      time:val([/^time$|giờ/i]),
+      note:val([/note|ghi.*chú/i])
+    };
+    try{
+      const r=await fetch('/api/appointments',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      const j=await r.json();
+      if(!r.ok) throw new Error(j.error||'Không thể đặt lịch');
+      alert('Đặt lịch thành công! Phòng khám sẽ liên hệ xác nhận.');
+      form.reset();
+    }catch(err){ alert(err.message); }
+  });
+})();
+</script>
+</body>
+</html>

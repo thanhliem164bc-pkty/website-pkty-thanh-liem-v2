@@ -1,0 +1,5 @@
+Đã cập nhật bản Dashboard PKTY Thanh Liêm với 10 ảnh người dùng cung cấp.
+- Thêm thư viện ảnh vào trang chủ.
+- Thêm ảnh đội ngũ và ảnh grooming/chăm sóc thú cưng.
+- Ảnh có thể bấm để xem kích thước lớn.
+- Tab Hình ảnh trong trang quản trị đã hiển thị thư viện ảnh hiện có.
