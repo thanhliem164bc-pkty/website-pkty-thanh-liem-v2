@@ -5,6 +5,7 @@ const fs = require("fs");
 const multer = require("multer");
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = process.env.PORT || 3000;
 const ADMIN_USER = process.env.ADMIN_USER || "admin";
 const ADMIN_PASS = process.env.ADMIN_PASS || "thanhliem2026";
