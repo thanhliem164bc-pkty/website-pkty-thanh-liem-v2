@@ -38,17 +38,27 @@ if (!fs.existsSync(appointmentsFile)) {
   fs.writeFileSync(appointmentsFile, "[]");
 }
 
-/* =========================
+
+/* =====================================================
    MULTER
-========================= */
+===================================================== */
 
 const upload = multer({
-  dest: uploadsDir
+  dest: uploadsDir,
+
+  limits: {
+    /*
+      Cho phép file tối đa 100MB.
+      Có thể tăng nếu cần.
+    */
+    fileSize: 100 * 1024 * 1024
+  }
 });
 
-/* =========================
-   DEFAULT WEBSITE DATA
-========================= */
+
+/* =====================================================
+   DATABASE DEFAULT
+===================================================== */
 
 const defaults = {
   name: "PHÒNG KHÁM THÚ Y PKTY THANH LIÊM",
@@ -60,7 +70,8 @@ const defaults = {
   facebook:
     "https://www.facebook.com/profile.php?id=61593452407647&locale=vi_VN",
 
-  address: "128 Lê Thị Hà, Xã Hóc Môn, TP.HCM",
+  address:
+    "128 Lê Thị Hà, Xã Hóc Môn, TP.HCM",
 
   maps:
     "https://maps.app.goo.gl/1pYxKcbj68PE8qyX8",
@@ -88,31 +99,50 @@ const defaults = {
   notifyEnabled: false
 };
 
-/* =========================
+
+/* =====================================================
    DATABASE
-========================= */
+===================================================== */
 
 function readDB() {
+
   try {
+
     if (!fs.existsSync(dbFile)) {
+
       fs.writeFileSync(
         dbFile,
-        JSON.stringify(defaults, null, 2)
+        JSON.stringify(
+          defaults,
+          null,
+          2
+        )
       );
 
-      return { ...defaults };
+      return {
+        ...defaults
+      };
     }
 
-    const data = JSON.parse(
-      fs.readFileSync(dbFile, "utf8")
-    );
+    const data =
+      JSON.parse(
+        fs.readFileSync(
+          dbFile,
+          "utf8"
+        )
+      );
 
     return {
       ...defaults,
       ...data
     };
+
   } catch (error) {
-    console.error("READ DB ERROR:", error);
+
+    console.error(
+      "READ DB ERROR:",
+      error
+    );
 
     return {
       ...defaults
@@ -120,16 +150,24 @@ function readDB() {
   }
 }
 
+
 function writeDB(data) {
+
   fs.writeFileSync(
     dbFile,
-    JSON.stringify(data, null, 2)
+    JSON.stringify(
+      data,
+      null,
+      2
+    )
   );
+
 }
 
-/* =========================
+
+/* =====================================================
    MIDDLEWARE
-========================= */
+===================================================== */
 
 app.use(
   express.json({
@@ -137,30 +175,39 @@ app.use(
   })
 );
 
-/*
-  Không cache API.
-  Tránh lỗi 304 làm frontend không đọc được JSON.
-*/
 
-app.use("/api", (req, res, next) => {
-  res.set(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, proxy-revalidate"
-  );
+app.use(
+  "/api",
+  (req, res, next) => {
 
-  res.set("Pragma", "no-cache");
+    res.set(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate"
+    );
 
-  res.set("Expires", "0");
+    res.set(
+      "Pragma",
+      "no-cache"
+    );
 
-  next();
-});
+    res.set(
+      "Expires",
+      "0"
+    );
 
-/* =========================
+    next();
+
+  }
+);
+
+
+/* =====================================================
    SESSION
-========================= */
+===================================================== */
 
 app.use(
   session({
+
     secret:
       process.env.SESSION_SECRET ||
       "thanh-liem-change-this-secret",
@@ -170,144 +217,233 @@ app.use(
     saveUninitialized: false,
 
     cookie: {
+
       httpOnly: true,
 
       sameSite: "lax",
 
       secure:
-        process.env.NODE_ENV === "production"
+        process.env.NODE_ENV ===
+        "production"
+
     }
+
   })
 );
 
-/* =========================
-   AUTH
-========================= */
 
-function auth(req, res, next) {
+/* =====================================================
+   AUTH
+===================================================== */
+
+function auth(
+  req,
+  res,
+  next
+) {
+
   if (
     req.session &&
     req.session.admin
   ) {
+
     return next();
+
   }
 
-  return res.status(401).json({
-    error: "Chưa đăng nhập"
-  });
+  return res
+    .status(401)
+    .json({
+      error:
+        "Chưa đăng nhập"
+    });
+
 }
 
-/* =========================
-   WEBSITE API
-========================= */
 
-app.get("/api/site", (req, res) => {
-  res.json(readDB());
-});
+/* =====================================================
+   SITE API
+===================================================== */
 
-app.post("/api/login", (req, res) => {
-  const {
-    username,
-    password
-  } = req.body || {};
+app.get(
+  "/api/site",
+  (req, res) => {
 
-  if (
-    username === ADMIN_USER &&
-    password === ADMIN_PASS
-  ) {
-    req.session.admin = true;
+    res.json(
+      readDB()
+    );
 
-    return res.json({
-      ok: true
-    });
   }
+);
 
-  return res.status(401).json({
-    error: "Sai tài khoản hoặc mật khẩu"
-  });
-});
 
-app.post("/api/logout", (req, res) => {
-  req.session.destroy(() => {
+app.post(
+  "/api/login",
+  (req, res) => {
+
+    const {
+      username,
+      password
+    } = req.body || {};
+
+    if (
+      username ===
+        ADMIN_USER &&
+      password ===
+        ADMIN_PASS
+    ) {
+
+      req.session.admin =
+        true;
+
+      return res.json({
+        ok: true
+      });
+
+    }
+
+    return res
+      .status(401)
+      .json({
+        error:
+          "Sai tài khoản hoặc mật khẩu"
+      });
+
+  }
+);
+
+
+app.post(
+  "/api/logout",
+  (req, res) => {
+
+    req.session.destroy(
+      () => {
+
+        res.json({
+          ok: true
+        });
+
+      }
+    );
+
+  }
+);
+
+
+app.get(
+  "/api/me",
+  (req, res) => {
+
     res.json({
-      ok: true
+
+      loggedIn:
+        !!(
+          req.session &&
+          req.session.admin
+        )
+
     });
-  });
-});
 
-app.get("/api/me", (req, res) => {
-  res.json({
-    loggedIn:
-      !!(
-        req.session &&
-        req.session.admin
-      )
-  });
-});
+  }
+);
 
-app.put("/api/site", auth, (req, res) => {
-  const data = {
-    ...defaults,
-    ...req.body
-  };
 
-  writeDB(data);
+app.put(
+  "/api/site",
+  auth,
+  (req, res) => {
 
-  res.json(data);
-});
+    const data = {
+      ...defaults,
+      ...req.body
+    };
 
-/* =========================
+    writeDB(data);
+
+    res.json(data);
+
+  }
+);
+
+
+/* =====================================================
    APPOINTMENTS
-========================= */
+===================================================== */
 
 function readAppointments() {
+
   try {
-    if (!fs.existsSync(appointmentsFile)) {
+
+    if (
+      !fs.existsSync(
+        appointmentsFile
+      )
+    ) {
       return [];
     }
 
-    const raw = fs.readFileSync(
-      appointmentsFile,
-      "utf8"
-    );
+    const raw =
+      fs.readFileSync(
+        appointmentsFile,
+        "utf8"
+      );
 
-    const data = JSON.parse(raw);
+    const data =
+      JSON.parse(raw);
 
     return Array.isArray(data)
       ? data
       : [];
+
   } catch (error) {
+
     console.error(
       "READ APPOINTMENTS ERROR:",
       error
     );
 
     return [];
+
   }
+
 }
+
 
 function writeAppointments(list) {
+
   fs.writeFileSync(
     appointmentsFile,
-    JSON.stringify(list, null, 2)
+    JSON.stringify(
+      list,
+      null,
+      2
+    )
   );
+
 }
 
+
 function makeId() {
+
   return (
     Date.now().toString(36) +
     Math.random()
       .toString(36)
       .slice(2, 8)
   );
+
 }
 
-/* Tạo lịch hẹn */
+
+/* Tạo lịch */
 
 app.post(
   "/api/appointments",
   (req, res) => {
-    const body = req.body || {};
+
+    const body =
+      req.body || {};
 
     const required = [
       "ownerName",
@@ -326,86 +462,112 @@ app.post(
       );
 
     if (missing.length) {
-      return res.status(400).json({
-        error:
-          "Vui lòng điền đầy đủ thông tin đặt lịch."
-      });
+
+      return res
+        .status(400)
+        .json({
+          error:
+            "Vui lòng điền đầy đủ thông tin đặt lịch."
+        });
+
     }
 
+
     const appointment = {
+
       id: makeId(),
 
       ownerName:
         String(
-          body.ownerName || ""
+          body.ownerName ||
+            ""
         ).trim(),
 
       phone:
         String(
-          body.phone || ""
+          body.phone ||
+            ""
         ).trim(),
 
       petName:
         String(
-          body.petName || ""
+          body.petName ||
+            ""
         ).trim(),
 
       petType:
         String(
-          body.petType || ""
+          body.petType ||
+            ""
         ).trim(),
 
       service:
         String(
-          body.service || ""
+          body.service ||
+            ""
         ).trim(),
 
       date:
         String(
-          body.date || ""
+          body.date ||
+            ""
         ).trim(),
 
       time:
         String(
-          body.time || ""
+          body.time ||
+            ""
         ).trim(),
 
       note:
         String(
-          body.note || ""
+          body.note ||
+            ""
         ).trim(),
 
-      status: "Mới",
+      status:
+        "Mới",
 
       createdAt:
         new Date().toISOString()
+
     };
+
 
     const list =
       readAppointments();
 
-    list.push(appointment);
+    list.push(
+      appointment
+    );
 
-    writeAppointments(list);
+    writeAppointments(
+      list
+    );
 
-    /*
-      Gửi webhook nếu có cấu hình.
-      Lỗi webhook không làm mất lịch hẹn.
-    */
 
-    const settings = readDB();
+    /* Webhook */
+
+    const settings =
+      readDB();
+
 
     if (
       settings.notifyEnabled &&
       settings.notifyWebhook
     ) {
+
       try {
-        const url = new URL(
-          settings.notifyWebhook
-        );
+
+        const url =
+          new URL(
+            settings.notifyWebhook
+          );
+
 
         const payload =
           JSON.stringify({
+
             content:
               `📅 Lịch hẹn mới tại PKTY Thanh Liêm\n` +
               `Khách: ${appointment.ownerName}\n` +
@@ -416,18 +578,23 @@ app.post(
                 appointment.service ||
                 "Chưa chọn"
               }`
+
           });
+
 
         const https =
           require(
-            url.protocol === "https:"
+            url.protocol ===
+              "https:"
               ? "https"
               : "http"
           );
 
+
         const request =
           https.request(
             {
+
               hostname:
                 url.hostname,
 
@@ -439,9 +606,11 @@ app.post(
                 url.pathname +
                 url.search,
 
-              method: "POST",
+              method:
+                "POST",
 
               headers: {
+
                 "Content-Type":
                   "application/json",
 
@@ -449,58 +618,79 @@ app.post(
                   Buffer.byteLength(
                     payload
                   )
+
               }
+
             },
+
             () => {}
+
           );
+
 
         request.on(
           "error",
           () => {}
         );
 
-        request.write(payload);
+
+        request.write(
+          payload
+        );
 
         request.end();
+
       } catch (error) {}
+
     }
+
 
     return res
       .status(201)
       .json({
+
         ok: true,
+
         appointment
+
       });
+
   }
 );
 
-/* Danh sách lịch hẹn */
+
+/* Danh sách lịch */
 
 app.get(
   "/api/appointments",
   auth,
   (req, res) => {
+
     const list =
-      readAppointments().sort(
-        (a, b) =>
-          new Date(
-            b.createdAt
-          ) -
-          new Date(
-            a.createdAt
-          )
-      );
+      readAppointments()
+        .sort(
+          (a, b) =>
+            new Date(
+              b.createdAt
+            ) -
+            new Date(
+              a.createdAt
+            )
+        );
 
     res.json(list);
+
   }
 );
 
-/* Cập nhật trạng thái */
+
+/* Sửa trạng thái */
 
 app.put(
   "/api/appointments/:id",
   auth,
   (req, res) => {
+
     const list =
       readAppointments();
 
@@ -511,28 +701,41 @@ app.put(
           req.params.id
       );
 
+
     if (!item) {
-      return res.status(404).json({
-        error:
-          "Không tìm thấy lịch hẹn"
-      });
+
+      return res
+        .status(404)
+        .json({
+          error:
+            "Không tìm thấy lịch hẹn"
+        });
+
     }
+
 
     if (
       req.body &&
       req.body.status
     ) {
+
       item.status =
         String(
           req.body.status
         );
+
     }
 
-    writeAppointments(list);
+
+    writeAppointments(
+      list
+    );
 
     res.json(item);
+
   }
 );
+
 
 /* Xóa lịch */
 
@@ -540,6 +743,7 @@ app.delete(
   "/api/appointments/:id",
   auth,
   (req, res) => {
+
     const list =
       readAppointments();
 
@@ -550,23 +754,34 @@ app.delete(
           req.params.id
       );
 
+
     if (
       next.length ===
       list.length
     ) {
-      return res.status(404).json({
-        error:
-          "Không tìm thấy lịch hẹn"
-      });
+
+      return res
+        .status(404)
+        .json({
+          error:
+            "Không tìm thấy lịch hẹn"
+        });
+
     }
 
-    writeAppointments(next);
+
+    writeAppointments(
+      next
+    );
+
 
     res.json({
       ok: true
     });
+
   }
 );
+
 
 /* Dashboard */
 
@@ -574,6 +789,7 @@ app.get(
   "/api/dashboard",
   auth,
   (req, res) => {
+
     const list =
       readAppointments();
 
@@ -582,17 +798,22 @@ app.get(
         .toISOString()
         .slice(0, 10);
 
+
     const todayCount =
       list.filter(
         x =>
-          x.date === today
+          x.date ===
+          today
       ).length;
+
 
     const newCount =
       list.filter(
         x =>
-          x.status === "Mới"
+          x.status ===
+          "Mới"
       ).length;
+
 
     const confirmed =
       list.filter(
@@ -600,6 +821,7 @@ app.get(
           x.status ===
           "Đã xác nhận"
       ).length;
+
 
     const upcoming =
       list
@@ -612,52 +834,66 @@ app.get(
         )
         .sort(
           (a, b) =>
-            `${a.date} ${a.time}`.localeCompare(
-              `${b.date} ${b.time}`
-            )
+            `${a.date} ${a.time}`
+              .localeCompare(
+                `${b.date} ${b.time}`
+              )
         )
         .slice(0, 10);
 
+
     res.json({
-      today: todayCount,
+
+      today:
+        todayCount,
 
       newCount,
 
       confirmed,
 
-      total: list.length,
+      total:
+        list.length,
 
       upcoming
+
     });
+
   }
 );
 
-/* =========================
+
+/* =====================================================
    SETTINGS
-========================= */
+===================================================== */
 
 app.get(
   "/api/settings",
   auth,
   (req, res) => {
+
     const data =
       readDB();
 
     res.json({
+
       notifyWebhook:
         data.notifyWebhook ||
         "",
 
       notifyEnabled:
         !!data.notifyEnabled
+
     });
+
   }
 );
+
 
 app.put(
   "/api/settings",
   auth,
   (req, res) => {
+
     const data =
       readDB();
 
@@ -670,148 +906,261 @@ app.put(
     data.notifyEnabled =
       !!req.body?.notifyEnabled;
 
+
     writeDB(data);
 
+
     res.json({
+
       notifyWebhook:
         data.notifyWebhook,
 
       notifyEnabled:
         data.notifyEnabled
+
     });
+
   }
 );
 
-/* =========================
+
+/* =====================================================
    GALLERY
-========================= */
+   ẢNH + VIDEO
+===================================================== */
 
-/*
-  API lấy toàn bộ ảnh trong:
+const IMAGE_EXTENSIONS = [
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".webp",
+  ".gif"
+];
 
-  uploads/gallery/
 
-  Những ảnh cũ và ảnh mới upload
-  đều tự động xuất hiện trên website.
-*/
+const VIDEO_EXTENSIONS = [
+  ".mp4",
+  ".webm",
+  ".mov"
+];
+
+
+function getMediaType(
+  filename
+) {
+
+  const ext =
+    path
+      .extname(filename)
+      .toLowerCase();
+
+
+  if (
+    IMAGE_EXTENSIONS.includes(
+      ext
+    )
+  ) {
+
+    return "image";
+
+  }
+
+
+  if (
+    VIDEO_EXTENSIONS.includes(
+      ext
+    )
+  ) {
+
+    return "video";
+
+  }
+
+
+  return null;
+
+}
+
+
+/* Danh sách ảnh + video */
 
 app.get(
   "/api/gallery",
   (req, res) => {
+
     try {
+
       if (
         !fs.existsSync(
           galleryDir
         )
       ) {
+
         fs.mkdirSync(
           galleryDir,
           {
             recursive: true
           }
         );
+
       }
+
 
       const files =
         fs.readdirSync(
           galleryDir
         )
-        .filter(file =>
-          /\.(jpg|jpeg|png|webp|gif)$/i.test(
-            file
-          )
+        .filter(
+          filename =>
+            getMediaType(
+              filename
+            )
+        )
+        .map(
+          filename => {
+
+            const fullPath =
+              path.join(
+                galleryDir,
+                filename
+              );
+
+            const stat =
+              fs.statSync(
+                fullPath
+              );
+
+            return {
+
+              filename,
+
+              type:
+                getMediaType(
+                  filename
+                ),
+
+              url:
+                `/uploads/gallery/${filename}`,
+
+              createdAt:
+                stat.mtimeMs
+
+            };
+
+          }
         )
         .sort(
-          (a, b) => {
-            const fileA =
-              path.join(
-                galleryDir,
-                a
-              );
-
-            const fileB =
-              path.join(
-                galleryDir,
-                b
-              );
-
-            return (
-              fs.statSync(
-                fileB
-              ).mtimeMs -
-              fs.statSync(
-                fileA
-              ).mtimeMs
-            );
-          }
+          (a, b) =>
+            b.createdAt -
+            a.createdAt
         );
 
-      const result =
-        files.map(
-          filename => ({
-            filename,
 
-            url:
-              `/uploads/gallery/${filename}`
-          })
-        );
+      res.json(
+        files
+      );
 
-      res.json(result);
+
     } catch (error) {
+
       console.error(
         "GALLERY ERROR:",
         error
       );
 
       res.json([]);
+
     }
+
   }
 );
 
-/*
-  Upload ảnh từ Admin.
 
-  Ảnh sẽ được lưu trực tiếp vào:
-
-  uploads/gallery/
-
-  Website public sẽ tự đọc
-  thư mục này thông qua /api/gallery
-*/
+/* =====================================================
+   UPLOAD ẢNH + VIDEO
+===================================================== */
 
 app.post(
   "/api/upload",
   auth,
   upload.single("image"),
   (req, res) => {
+
     try {
+
       if (!req.file) {
-        return res.status(400).json({
-          error:
-            "Chưa chọn ảnh"
-        });
+
+        return res
+          .status(400)
+          .json({
+            error:
+              "Chưa chọn ảnh hoặc video"
+          });
+
       }
+
+
+      const originalName =
+        req.file
+          .originalname ||
+        "";
+
 
       const ext =
         path
           .extname(
-            req.file
-              .originalname ||
-              ""
+            originalName
           )
           .toLowerCase();
 
-      const safeExt =
-        /^\.(jpg|jpeg|png|webp|gif)$/i.test(
+
+      const allowedExtensions =
+        [
+          ...IMAGE_EXTENSIONS,
+          ...VIDEO_EXTENSIONS
+        ];
+
+
+      if (
+        !allowedExtensions.includes(
           ext
         )
-          ? ext
-          : ".jpg";
+      ) {
+
+        try {
+
+          fs.unlinkSync(
+            req.file.path
+          );
+
+        } catch (e) {}
+
+
+        return res
+          .status(400)
+          .json({
+
+            error:
+              "Định dạng không được hỗ trợ. Chỉ nhận JPG, JPEG, PNG, WEBP, GIF, MP4, WEBM, MOV."
+
+          });
+
+      }
+
+
+      const mediaType =
+        IMAGE_EXTENSIONS.includes(
+          ext
+        )
+          ? "image"
+          : "video";
+
 
       const filename =
         `gallery-${Date.now()}-${Math.random()
           .toString(36)
-          .slice(2, 8)}${safeExt}`;
+          .slice(2, 8)}${ext}`;
+
 
       const destination =
         path.join(
@@ -819,24 +1168,35 @@ app.post(
           filename
         );
 
+
       fs.renameSync(
         req.file.path,
         destination
       );
 
+
       return res.json({
+
         ok: true,
 
         filename,
 
+        type:
+          mediaType,
+
         url:
           `/uploads/gallery/${filename}`
+
       });
+
+
     } catch (error) {
+
       console.error(
         "UPLOAD ERROR:",
         error
       );
+
 
       if (
         req.file &&
@@ -845,24 +1205,36 @@ app.post(
           req.file.path
         )
       ) {
+
         try {
+
           fs.unlinkSync(
             req.file.path
           );
-        } catch {}
+
+        } catch (e) {}
+
       }
 
-      return res.status(500).json({
-        error:
-          "Không thể tải ảnh lên"
-      });
+
+      return res
+        .status(500)
+        .json({
+
+          error:
+            "Không thể tải ảnh/video lên"
+
+        });
+
     }
+
   }
 );
 
-/* =========================
+
+/* =====================================================
    STATIC FILES
-========================= */
+===================================================== */
 
 app.use(
   "/admin",
@@ -874,35 +1246,44 @@ app.use(
   )
 );
 
+
 app.use(
   express.static(
     publicDir
   )
 );
 
-/* =========================
+
+/* =====================================================
    API 404
-========================= */
+===================================================== */
 
 app.use(
   "/api",
   (req, res) => {
-    res.status(404).json({
-      error:
-        "API không tồn tại"
-    });
+
+    res
+      .status(404)
+      .json({
+        error:
+          "API không tồn tại"
+      });
+
   }
 );
 
-/* =========================
-   START SERVER
-========================= */
+
+/* =====================================================
+   START
+===================================================== */
 
 app.listen(
   PORT,
   () => {
+
     console.log(
       `Thanh Liem website running on port ${PORT}`
     );
+
   }
 );
