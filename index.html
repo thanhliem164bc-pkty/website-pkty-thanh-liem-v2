@@ -3,8 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Phòng Khám Thú Y PKTY Thanh Liêm | Hóc Môn, TP.HCM</title>
-  <meta name="description" content="Phòng khám Thú y PKTY Thanh Liêm - Điều trị, tiêm phòng, spa và petshop tại Hóc Môn, TP.HCM.">
+
+  <meta
+    name="description"
+    content="Phòng khám Thú y PKTY Thanh Liêm - Điều trị, tiêm phòng, spa và petshop tại Hóc Môn, TP.HCM."
+  >
 
   <style>
     :root{
@@ -19,8 +24,13 @@
       --radius:22px;
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    *{
+      box-sizing:border-box
+    }
+
+    html{
+      scroll-behavior:smooth
+    }
 
     body{
       margin:0;
@@ -108,7 +118,12 @@
     }
 
     .hero{
-      background:linear-gradient(120deg,#fffaf1 0%,#fff 55%,#f5eadc 100%);
+      background:linear-gradient(
+        120deg,
+        #fffaf1 0%,
+        #fff 55%,
+        #f5eadc 100%
+      );
       padding:64px 0 72px
     }
 
@@ -317,7 +332,9 @@
       font-weight:900
     }
 
-    /* GALLERY */
+    /* =========================
+       GALLERY + VIDEO
+    ========================= */
 
     .gallery-grid{
       display:grid;
@@ -332,7 +349,6 @@
       border-radius:22px;
       min-height:260px;
       background:#f3ede4;
-      text-decoration:none;
       box-shadow:0 10px 28px rgba(73,45,28,.08)
     }
 
@@ -349,19 +365,56 @@
       transform:scale(1.045)
     }
 
+    .gallery-card video{
+      width:100%;
+      height:100%;
+      min-height:260px;
+      object-fit:cover;
+      display:block;
+      background:#111
+    }
+
     .gallery-feature{
       grid-column:span 2;
       grid-row:span 2;
       min-height:536px
     }
 
-    .gallery-feature img{
+    .gallery-feature img,
+    .gallery-feature video{
       min-height:536px
+    }
+
+    .media-label{
+      position:absolute;
+      left:12px;
+      bottom:12px;
+      z-index:2;
+      background:rgba(48,37,29,.78);
+      color:#fff;
+      padding:9px 12px;
+      border-radius:12px;
+      font-size:13px;
+      font-weight:800;
+      backdrop-filter:blur(5px)
+    }
+
+    .video-badge{
+      position:absolute;
+      top:12px;
+      left:12px;
+      z-index:2;
+      background:rgba(91,53,31,.88);
+      color:#fff;
+      padding:7px 11px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900
     }
 
     .gallery-empty{
       grid-column:1/-1;
-      padding:40px;
+      padding:45px 20px;
       border-radius:22px;
       background:#f8f2e9;
       text-align:center;
@@ -431,10 +484,16 @@
       color:#cfc2b8
     }
 
-    /* BOOKING */
+    /* =========================
+       BOOKING
+    ========================= */
 
     .booking{
-      background:linear-gradient(135deg,#5b351f,#7b4b2b);
+      background:linear-gradient(
+        135deg,
+        #5b351f,
+        #7b4b2b
+      );
       color:#fff
     }
 
@@ -539,7 +598,9 @@
       line-height:1.55
     }
 
-    /* PRICING */
+    /* =========================
+       PRICING
+    ========================= */
 
     .pricing{
       background:#fff
@@ -610,7 +671,9 @@
       margin:10px 2px 0
     }
 
-    /* FLOATING */
+    /* =========================
+       FLOATING
+    ========================= */
 
     .floating{
       position:fixed;
@@ -634,7 +697,9 @@
       box-shadow:0 10px 25px rgba(0,0,0,.2)
     }
 
-    /* RESPONSIVE */
+    /* =========================
+       RESPONSIVE
+    ========================= */
 
     @media(max-width:900px){
 
@@ -674,9 +739,11 @@
         min-height:360px
       }
 
-      .gallery-feature img{
+      .gallery-feature img,
+      .gallery-feature video{
         min-height:360px
       }
+
     }
 
     @media(max-width:600px){
@@ -688,6 +755,7 @@
       .price-group h3{
         font-size:19px
       }
+
     }
 
     @media(max-width:560px){
@@ -730,7 +798,8 @@
       }
 
       .gallery-card,
-      .gallery-card img{
+      .gallery-card img,
+      .gallery-card video{
         min-height:300px
       }
 
@@ -739,7 +808,8 @@
         min-height:340px
       }
 
-      .gallery-feature img{
+      .gallery-feature img,
+      .gallery-feature video{
         min-height:340px
       }
 
@@ -747,31 +817,60 @@
         padding:10px 14px;
         font-size:13px
       }
+
     }
+
   </style>
 </head>
+
 
 <body>
 
 <header>
+
   <div class="container nav">
 
     <a class="brand" href="#top">
-      <span class="brand-mark">🐾</span>
+
+      <span class="brand-mark">
+        🐾
+      </span>
 
       <span>
         PKTY THANH LIÊM
-        <small>PHÒNG KHÁM THÚ Y</small>
+        <small>
+          PHÒNG KHÁM THÚ Y
+        </small>
       </span>
+
     </a>
 
+
     <nav>
-      <a href="#dich-vu">Dịch vụ</a>
-      <a href="#dat-lich">Đặt lịch</a>
-      <a href="#gioi-thieu">Về chúng tôi</a>
-      <a href="#hinh-anh">Hình ảnh</a>
-      <a href="#bang-gia">Dịch vụ</a>
-      <a href="#lien-he">Liên hệ</a>
+
+      <a href="#dich-vu">
+        Dịch vụ
+      </a>
+
+      <a href="#dat-lich">
+        Đặt lịch
+      </a>
+
+      <a href="#gioi-thieu">
+        Về chúng tôi
+      </a>
+
+      <a href="#hinh-anh">
+        Hình ảnh & Video
+      </a>
+
+      <a href="#bang-gia">
+        Dịch vụ
+      </a>
+
+      <a href="#lien-he">
+        Liên hệ
+      </a>
 
       <a
         href="https://www.facebook.com/profile.php?id=61593452407647&locale=vi_VN"
@@ -788,19 +887,28 @@
       >
         Quản trị
       </a>
+
     </nav>
 
-    <a class="call" href="tel:0938848238">
+
+    <a
+      class="call"
+      href="tel:0938848238"
+    >
       📞 0938 848 238
     </a>
 
   </div>
+
 </header>
 
 
 <main id="top">
 
-<!-- HERO -->
+
+<!-- ==================================================
+     HERO
+================================================== -->
 
 <section class="hero">
 
@@ -821,28 +929,48 @@
         Phòng Khám Thú Y PKTY Thanh Liêm đồng hành cùng gia đình bạn trong chăm sóc, điều trị và làm đẹp cho thú cưng tại Hóc Môn, TP.HCM.
       </p>
 
+
       <div class="actions">
 
-        <a class="btn btn-primary" href="#dat-lich">
+        <a
+          class="btn btn-primary"
+          href="#dat-lich"
+        >
           📅 Đặt lịch khám
         </a>
 
-        <a class="btn btn-secondary" href="#dich-vu">
+        <a
+          class="btn btn-secondary"
+          href="#dich-vu"
+        >
           Xem dịch vụ
         </a>
 
       </div>
 
+
       <div class="badges">
 
-        <span class="badge">🩺 Điều trị</span>
-        <span class="badge">💉 Tiêm phòng</span>
-        <span class="badge">✨ Spa</span>
-        <span class="badge">🛍️ Petshop</span>
+        <span class="badge">
+          🩺 Điều trị
+        </span>
+
+        <span class="badge">
+          💉 Tiêm phòng
+        </span>
+
+        <span class="badge">
+          ✨ Spa
+        </span>
+
+        <span class="badge">
+          🛍️ Petshop
+        </span>
 
       </div>
 
     </div>
+
 
     <div class="hero-photo">
 
@@ -858,9 +986,14 @@
 </section>
 
 
-<!-- DỊCH VỤ -->
+<!-- ==================================================
+     SERVICES
+================================================== -->
 
-<section id="dich-vu" class="services">
+<section
+  id="dich-vu"
+  class="services"
+>
 
   <div class="container">
 
@@ -880,11 +1013,14 @@
 
     </div>
 
+
     <div class="grid4">
 
       <article class="card">
 
-        <div class="icon">🩺</div>
+        <div class="icon">
+          🩺
+        </div>
 
         <h3>
           Điều trị
@@ -899,7 +1035,9 @@
 
       <article class="card">
 
-        <div class="icon">💉</div>
+        <div class="icon">
+          💉
+        </div>
 
         <h3>
           Tiêm phòng
@@ -914,7 +1052,9 @@
 
       <article class="card">
 
-        <div class="icon">✨</div>
+        <div class="icon">
+          ✨
+        </div>
 
         <h3>
           Spa thú cưng
@@ -929,7 +1069,9 @@
 
       <article class="card">
 
-        <div class="icon">🛍️</div>
+        <div class="icon">
+          🛍️
+        </div>
 
         <h3>
           Petshop
@@ -948,7 +1090,9 @@
 </section>
 
 
-<!-- GIỚI THIỆU -->
+<!-- ==================================================
+     ABOUT
+================================================== -->
 
 <section id="gioi-thieu">
 
@@ -977,6 +1121,7 @@
         Chăm sóc bằng sự tận tâm
       </h2>
 
+
       <div class="list">
 
         <div>
@@ -986,6 +1131,7 @@
           </span>
 
           <div>
+
             <b>
               Tư vấn rõ ràng
             </b>
@@ -995,6 +1141,7 @@
             <span>
               Giải thích tình trạng và hướng chăm sóc để chủ nuôi dễ theo dõi.
             </span>
+
           </div>
 
         </div>
@@ -1054,16 +1201,21 @@
 </section>
 
 
-<!-- GALLERY -->
+<!-- ==================================================
+     GALLERY + VIDEO
+================================================== -->
 
-<section id="hinh-anh" style="padding-top:20px">
+<section
+  id="hinh-anh"
+  style="padding-top:20px"
+>
 
   <div class="container">
 
     <div class="section-head">
 
       <div class="eyebrow">
-        Hình ảnh
+        Hình ảnh & Video
       </div>
 
       <h2>
@@ -1071,25 +1223,37 @@
       </h2>
 
       <p>
-        Một số hình ảnh thú cưng, chăm sóc và đội ngũ tại PKTY Thanh Liêm. Nhấn vào ảnh để xem kích thước lớn.
+        Hình ảnh và video thú cưng, chăm sóc và hoạt động tại PKTY Thanh Liêm.
       </p>
 
     </div>
 
 
     <!--
+
       QUAN TRỌNG:
 
-      Gallery này KHÔNG còn cố định ảnh.
+      Không cần thêm ảnh/video thủ công ở đây.
 
-      Website sẽ gọi:
+      Website tự gọi:
+
       /api/gallery
 
-      và tự lấy toàn bộ ảnh trong:
+      Server sẽ lấy toàn bộ:
+
       uploads/gallery/
 
-      Vì vậy ảnh upload từ Admin
-      sẽ tự động xuất hiện tại đây.
+      Bao gồm:
+
+      JPG
+      JPEG
+      PNG
+      WEBP
+      GIF
+      MP4
+      WEBM
+      MOV
+
     -->
 
     <div
@@ -1118,9 +1282,14 @@
 </section>
 
 
-<!-- BẢNG DỊCH VỤ -->
+<!-- ==================================================
+     SERVICES LIST
+================================================== -->
 
-<section id="bang-gia" class="pricing">
+<section
+  id="bang-gia"
+  class="pricing"
+>
 
   <div class="container">
 
@@ -1141,7 +1310,10 @@
     </div>
 
 
-    <div class="price-tabs" role="tablist">
+    <div
+      class="price-tabs"
+      role="tablist"
+    >
 
       <button
         class="price-tab active"
@@ -1205,9 +1377,14 @@
 </section>
 
 
-<!-- ĐẶT LỊCH -->
+<!-- ==================================================
+     BOOKING
+================================================== -->
 
-<section id="dat-lich" class="booking">
+<section
+  id="dat-lich"
+  class="booking"
+>
 
   <div class="container booking-grid">
 
@@ -1427,9 +1604,14 @@
 </section>
 
 
-<!-- LIÊN HỆ -->
+<!-- ==================================================
+     CONTACT
+================================================== -->
 
-<section id="lien-he" class="contact">
+<section
+  id="lien-he"
+  class="contact"
+>
 
   <div class="container">
 
@@ -1447,6 +1629,7 @@
 
 
     <div class="contact-grid">
+
 
       <div class="contact-card">
 
@@ -1484,9 +1667,11 @@
             </b>
 
             <span>
+
               <a href="tel:0938848238">
                 0938 848 238
               </a>
+
             </span>
 
           </div>
@@ -1598,7 +1783,9 @@
 </main>
 
 
-<!-- FOOTER -->
+<!-- ==================================================
+     FOOTER
+================================================== -->
 
 <footer>
 
@@ -1634,7 +1821,9 @@
 </footer>
 
 
-<!-- FLOATING BUTTONS -->
+<!-- ==================================================
+     FLOATING BUTTONS
+================================================== -->
 
 <div class="floating">
 
@@ -1687,7 +1876,9 @@
 </div>
 
 
-<!-- BOOKING UI -->
+<!-- ==================================================
+     BOOKING SCRIPT
+================================================== -->
 
 <script>
 
@@ -1695,18 +1886,19 @@
 
   const form =
     document.getElementById(
-      'bookingForm'
+      "bookingForm"
     );
 
   const result =
     document.getElementById(
-      'bookingResult'
+      "bookingResult"
     );
 
   const date =
     document.getElementById(
-      'date'
+      "date"
     );
+
 
   const today =
     new Date();
@@ -1716,6 +1908,7 @@
     today.getTimezoneOffset()
   );
 
+
   date.min =
     today
       .toISOString()
@@ -1723,7 +1916,7 @@
 
 
   form.addEventListener(
-    'submit',
+    "submit",
     async function(e){
 
       e.preventDefault();
@@ -1731,75 +1924,84 @@
 
       const owner =
         document
-          .getElementById('owner')
+          .getElementById("owner")
           .value
           .trim();
+
 
       const phone =
         document
-          .getElementById('phone')
+          .getElementById("phone")
           .value
           .trim();
 
+
       const pet =
         document
-          .getElementById('pet')
+          .getElementById("pet")
           .value
           .trim() ||
-        'Chưa nhập';
+        "Chưa nhập";
+
 
       const type =
         document
-          .getElementById('type')
+          .getElementById("type")
           .value;
+
 
       const service =
         document
-          .getElementById('service')
+          .getElementById("service")
           .value;
+
 
       const d =
         document
-          .getElementById('date')
+          .getElementById("date")
           .value;
+
 
       const t =
         document
-          .getElementById('time')
+          .getElementById("time")
           .value ||
-        'Chưa chọn';
+        "Chưa chọn";
+
 
       const note =
         document
-          .getElementById('note')
+          .getElementById("note")
           .value
           .trim() ||
-        'Không có';
-
-
-      const formatted =
-        d
-          ? d.split('-').reverse().join('/')
-          : 'Chưa chọn';
+        "Không có";
 
 
       const payload = {
 
-        ownerName: owner,
+        ownerName:
+          owner,
 
-        phone: phone,
+        phone:
+          phone,
 
-        petName: pet,
+        petName:
+          pet,
 
-        petType: type,
+        petType:
+          type,
 
-        service: service,
+        service:
+          service,
 
-        date: d,
+        date:
+          d,
 
-        time: t,
+        time:
+          t,
 
-        note: note
+        note:
+          note
 
       };
 
@@ -1808,13 +2010,13 @@
 
         const response =
           await fetch(
-            '/api/appointments',
+            "/api/appointments",
             {
-              method:'POST',
+              method:"POST",
 
               headers:{
-                'Content-Type':
-                  'application/json'
+                "Content-Type":
+                  "application/json"
               },
 
               body:
@@ -1829,61 +2031,77 @@
           await response.json();
 
 
-        if(!response.ok){
+        if(
+          !response.ok
+        ){
 
           throw new Error(
             data.error ||
-            'Không thể đặt lịch'
+            "Không thể đặt lịch"
           );
 
         }
 
 
+        const formatted =
+          d
+            ? d
+                .split("-")
+                .reverse()
+                .join("/")
+            : "Chưa chọn";
+
+
         result.style.display =
-          'block';
+          "block";
 
 
         result.innerHTML =
-          '<b>Đã tạo thông tin đặt lịch!</b><br>' +
 
-          '👤 ' +
+          "<b>Đã tạo thông tin đặt lịch!</b><br>" +
+
+          "👤 " +
           owner +
-          ' · ☎ ' +
+          " · ☎ " +
           phone +
-          '<br>' +
+          "<br>" +
 
-          '🐾 ' +
+          "🐾 " +
           pet +
-          ' (' +
+          " (" +
           type +
-          ') · 🩺 ' +
+          ") · 🩺 " +
           service +
-          '<br>' +
+          "<br>" +
 
-          '📅 ' +
+          "📅 " +
           formatted +
-          ' · ⏰ ' +
+          " · ⏰ " +
           t +
-          '<br>' +
+          "<br>" +
 
-          '📝 ' +
+          "📝 " +
           note +
-          '<br><br>' +
+          "<br><br>" +
 
           '<a href="tel:0938848238" style="font-weight:900">' +
-          '☎ Gọi 0938 848 238 để xác nhận' +
-          '</a>' +
 
-          ' · ' +
+          "☎ Gọi 0938 848 238 để xác nhận" +
+
+          "</a>" +
+
+          " · " +
 
           '<a href="https://zalo.me/0938848238" target="_blank" rel="noopener" style="font-weight:900">' +
-          '💬 Mở Zalo' +
-          '</a>';
+
+          "💬 Mở Zalo" +
+
+          "</a>";
 
 
         result.scrollIntoView({
-          behavior:'smooth',
-          block:'nearest'
+          behavior:"smooth",
+          block:"nearest"
         });
 
 
@@ -1893,10 +2111,11 @@
       }catch(error){
 
         result.style.display =
-          'block';
+          "block";
+
 
         result.innerHTML =
-          '<b>Không thể gửi đặt lịch.</b><br>' +
+          "<b>Không thể gửi đặt lịch.</b><br>" +
           error.message;
 
       }
@@ -1909,49 +2128,55 @@
 </script>
 
 
-<!-- PRICE TABS -->
+<!-- ==================================================
+     PRICE TAB
+================================================== -->
 
 <script>
 
 document
   .querySelectorAll(
-    '.price-tab'
+    ".price-tab"
   )
   .forEach(
     function(tab){
 
       tab.addEventListener(
-        'click',
+        "click",
         function(){
 
           document
             .querySelectorAll(
-              '.price-tab'
+              ".price-tab"
             )
             .forEach(
               function(t){
+
                 t.classList.remove(
-                  'active'
+                  "active"
                 );
+
               }
             );
 
 
           document
             .querySelectorAll(
-              '.price-panel'
+              ".price-panel"
             )
             .forEach(
               function(panel){
+
                 panel.classList.remove(
-                  'active'
+                  "active"
                 );
+
               }
             );
 
 
           tab.classList.add(
-            'active'
+            "active"
           );
 
 
@@ -1960,7 +2185,7 @@ document
               tab.dataset.panel
             )
             .classList.add(
-              'active'
+              "active"
             );
 
         }
@@ -1972,87 +2197,85 @@ document
 </script>
 
 
-<!-- LOAD SITE DATA -->
+<!-- ==================================================
+     LOAD SITE DATA
+================================================== -->
 
 <script>
 
 (async function(){
 
-  const KEY =
-    'thanhliem_site_content_v1';
-
-
   const defaults = {
 
     name:
-      'PHÒNG KHÁM THÚ Y PKTY THANH LIÊM',
+      "PHÒNG KHÁM THÚ Y PKTY THANH LIÊM",
 
     phone:
-      '0938 848 238',
+      "0938 848 238",
 
     zalo:
-      'https://zalo.me/0938848238',
+      "https://zalo.me/0938848238",
 
     facebook:
-      'https://www.facebook.com/profile.php?id=61593452407647&locale=vi_VN',
+      "https://www.facebook.com/profile.php?id=61593452407647&locale=vi_VN",
 
     address:
-      '128 Lê Thị Hà, Xã Hóc Môn, TP.HCM',
+      "128 Lê Thị Hà, Xã Hóc Môn, TP.HCM",
 
     maps:
-      'https://maps.app.goo.gl/1pYxKcbj68PE8qyX8',
+      "https://maps.app.goo.gl/1pYxKcbj68PE8qyX8",
 
     heroTitle:
-      'Người bạn nhỏ, luôn được yêu thương.',
+      "Người bạn nhỏ, luôn được yêu thương.",
 
     heroText:
-      '',
+      "",
 
     about:
-      '',
+      "",
 
     bookingText:
-      '',
+      "",
 
     services:[
-      'Lưu chuồng',
-      'Điều trị',
-      'Truyền dịch',
-      'Mổ lấy thai',
-      'Mổ viêm tử cung',
-      'Sổ giun',
-      'Thiêu huỷ chó mèo',
-      'Chụp X-quang',
-      'Xét nghiệm Sinh lý',
-      'Xét nghiệm Sinh hoá',
-      'Xét nghiệm Tổng quát',
-      'Sưởi đèn',
-      'Thở oxy',
-      'Cắt đuôi chó con',
-      'Siêu âm',
-      'Vệ sinh vết thương',
-      'Soi da, soi phân'
+      "Lưu chuồng",
+      "Điều trị",
+      "Truyền dịch",
+      "Mổ lấy thai",
+      "Mổ viêm tử cung",
+      "Sổ giun",
+      "Thiêu huỷ chó mèo",
+      "Chụp X-quang",
+      "Xét nghiệm Sinh lý",
+      "Xét nghiệm Sinh hoá",
+      "Xét nghiệm Tổng quát",
+      "Sưởi đèn",
+      "Thở oxy",
+      "Cắt đuôi chó con",
+      "Siêu âm",
+      "Vệ sinh vết thương",
+      "Soi da, soi phân"
     ],
 
     spa:[
-      'Tắm vệ sinh cơ bản',
-      'Cạo lông body',
-      'Combo Grooming trọn gói',
-      'Tắm vệ sinh cơ bản cho mèo',
-      'Combo Tắm + Cạo lông mát / sư tử',
-      'Combo Tắm + Cắt tỉa thẩm mỹ',
-      'Cắt & mài móng',
-      'Vệ sinh tai & nhổ lông tai',
-      'Vắt tuyến hôi',
-      'Cạo 4 chân',
-      'Cạo lông vệ sinh',
-      'Gỡ lông rối'
+      "Tắm vệ sinh cơ bản",
+      "Cạo lông body",
+      "Combo Grooming trọn gói",
+      "Tắm vệ sinh cơ bản cho mèo",
+      "Combo Tắm + Cạo lông mát / sư tử",
+      "Combo Tắm + Cắt tỉa thẩm mỹ",
+      "Cắt & mài móng",
+      "Vệ sinh tai & nhổ lông tai",
+      "Vắt tuyến hôi",
+      "Cạo 4 chân",
+      "Cạo lông vệ sinh",
+      "Gỡ lông rối"
     ]
 
   };
 
 
-  let d = {
+  let data = {
     ...defaults
   };
 
@@ -2061,20 +2284,23 @@ document
 
     const response =
       await fetch(
-        '/api/site',
+        "/api/site",
         {
-          cache:'no-store'
+          cache:"no-store"
         }
       );
 
 
-    if(response.ok){
+    if(
+      response.ok
+    ){
 
       const apiData =
         await response.json();
 
-      d = {
-        ...d,
+
+      data = {
+        ...data,
         ...apiData
       };
 
@@ -2082,42 +2308,31 @@ document
 
   }catch(error){
 
-    try{
-
-      const local =
-        JSON.parse(
-          localStorage.getItem(
-            KEY
-          ) ||
-          '{}'
-        );
-
-      d = {
-        ...d,
-        ...local
-      };
-
-    }catch(e){}
+    console.error(
+      "Không tải được site data:",
+      error
+    );
 
   }
 
 
   if(
-    d.heroTitle
+    data.heroTitle
   ){
 
     const heroTitle =
       document.querySelector(
-        '.hero h1'
+        ".hero h1"
       );
+
 
     if(heroTitle){
 
       heroTitle.innerHTML =
-        d.heroTitle
+        data.heroTitle
           .replace(
-            ',',
-            ',<br>'
+            ",",
+            ",<br>"
           );
 
     }
@@ -2126,18 +2341,19 @@ document
 
 
   if(
-    d.heroText
+    data.heroText
   ){
 
     const heroP =
       document.querySelector(
-        '.hero p'
+        ".hero p"
       );
+
 
     if(heroP){
 
       heroP.textContent =
-        d.heroText;
+        data.heroText;
 
     }
 
@@ -2145,18 +2361,19 @@ document
 
 
   if(
-    d.about
+    data.about
   ){
 
     const aboutP =
       document.querySelector(
-        '#gioi-thieu .about-box p'
+        "#gioi-thieu .about-box p"
       );
+
 
     if(aboutP){
 
       aboutP.textContent =
-        d.about;
+        data.about;
 
     }
 
@@ -2164,18 +2381,19 @@ document
 
 
   if(
-    d.bookingText
+    data.bookingText
   ){
 
     const bookingP =
       document.querySelector(
-        '#dat-lich .booking-copy p'
+        "#dat-lich .booking-copy p"
       );
+
 
     if(bookingP){
 
       bookingP.textContent =
-        d.bookingText;
+        data.bookingText;
 
     }
 
@@ -2184,15 +2402,17 @@ document
 
   const serviceList =
     document.getElementById(
-      'serviceList'
+      "serviceList"
     );
 
 
   if(serviceList){
 
     const services =
-      Array.isArray(d.services)
-        ? d.services
+      Array.isArray(
+        data.services
+      )
+        ? data.services
         : defaults.services;
 
 
@@ -2202,31 +2422,37 @@ document
           function(item){
 
             return `
+
               <div class="item">
+
                 <span>
                   🐾 ${item}
                 </span>
+
               </div>
+
             `;
 
           }
         )
-        .join('');
+        .join("");
 
   }
 
 
   const spaList =
     document.getElementById(
-      'spaList'
+      "spaList"
     );
 
 
   if(spaList){
 
     const spa =
-      Array.isArray(d.spa)
-        ? d.spa
+      Array.isArray(
+        data.spa
+      )
+        ? data.spa
         : defaults.spa;
 
 
@@ -2236,36 +2462,45 @@ document
           function(item){
 
             return `
+
               <div class="item">
+
                 <span>
                   ✨ ${item}
                 </span>
+
               </div>
+
             `;
 
           }
         )
-        .join('');
+        .join("");
 
   }
 
 
   const select =
     document.getElementById(
-      'service'
+      "service"
     );
 
 
   if(select){
 
     const services =
-      Array.isArray(d.services)
-        ? d.services
+      Array.isArray(
+        data.services
+      )
+        ? data.services
         : [];
 
+
     const spa =
-      Array.isArray(d.spa)
-        ? d.spa
+      Array.isArray(
+        data.spa
+      )
+        ? data.spa
         : [];
 
 
@@ -2277,14 +2512,17 @@ document
 
         const option =
           document.createElement(
-            'option'
+            "option"
           );
+
 
         option.textContent =
           item;
 
+
         option.value =
           item;
+
 
         select.appendChild(
           option
@@ -2304,14 +2542,14 @@ document
       function(a){
 
         a.href =
-          'tel:' +
+          "tel:" +
           String(
-            d.phone ||
-            '0938848238'
+            data.phone ||
+            "0938848238"
           )
           .replace(
             /\D/g,
-            ''
+            ""
           );
 
       }
@@ -2326,7 +2564,7 @@ document
       function(a){
 
         a.href =
-          d.zalo ||
+          data.zalo ||
           defaults.zalo;
 
       }
@@ -2341,7 +2579,7 @@ document
       function(a){
 
         a.href =
-          d.facebook ||
+          data.facebook ||
           defaults.facebook;
 
       }
@@ -2356,7 +2594,7 @@ document
       function(a){
 
         a.href =
-          d.maps ||
+          data.maps ||
           defaults.maps;
 
       }
@@ -2364,9 +2602,11 @@ document
 
 
   document.title =
-    (d.name ||
-      defaults.name) +
-    ' — Chăm sóc thú cưng';
+    (
+      data.name ||
+      defaults.name
+    ) +
+    " — Chăm sóc thú cưng";
 
 
 })();
@@ -2374,27 +2614,9 @@ document
 </script>
 
 
-<!--
-====================================================
-GALLERY DYNAMIC LOADER
-====================================================
-
-Đây là phần quan trọng nhất.
-
-Admin upload:
-Admin
-↓
-/api/upload
-↓
-uploads/gallery/
-↓
-/api/gallery
-↓
-index.html
-↓
-Ảnh xuất hiện trên website
-====================================================
--->
+<!-- ==================================================
+     GALLERY / VIDEO LOADER
+================================================== -->
 
 <script>
 
@@ -2402,7 +2624,7 @@ async function loadGallery(){
 
   const gallery =
     document.getElementById(
-      'galleryGrid'
+      "galleryGrid"
     );
 
 
@@ -2415,27 +2637,29 @@ async function loadGallery(){
 
     const response =
       await fetch(
-        '/api/gallery',
+        "/api/gallery",
         {
-          cache:'no-store'
+          cache:"no-store"
         }
       );
 
 
-    if(!response.ok){
+    if(
+      !response.ok
+    ){
 
       throw new Error(
-        'Không tải được gallery'
+        "Không tải được gallery"
       );
 
     }
 
 
-    const images =
+    const media =
       await response.json();
 
 
-    let html = '';
+    let html = "";
 
 
     /*
@@ -2456,70 +2680,161 @@ async function loadGallery(){
           alt="Mặt tiền Phòng khám Thú y PKTY Thanh Liêm"
         >
 
+        <span class="media-label">
+          📷 Phòng khám
+        </span>
+
       </a>
 
     `;
 
 
     /*
-      Ảnh lấy từ server.
-
-      Mỗi lần Admin upload ảnh mới,
-      server trả về ảnh đó trong /api/gallery.
+      Nếu chưa có media upload
     */
 
     if(
-      Array.isArray(images) &&
-      images.length
+      !Array.isArray(media) ||
+      media.length === 0
     ){
 
-      images.forEach(
-        function(item){
+      gallery.innerHTML =
+        html +
+        `
 
-          if(
-            !item ||
-            !item.url
-          ){
-            return;
-          }
+          <div class="gallery-empty">
+
+            <div style="font-size:42px">
+              🐾
+            </div>
+
+            <b>
+              Hình ảnh & video đang được cập nhật
+            </b>
+
+            <br>
+
+            <span>
+              Phòng khám sẽ cập nhật thêm những khoảnh khắc mới.
+            </span>
+
+          </div>
+
+        `;
+
+      return;
+
+    }
 
 
-          const safeUrl =
-            String(
-              item.url
-            );
+    /*
+      Render từng ảnh/video
+    */
+
+    media.forEach(
+      function(item){
+
+        if(
+          !item ||
+          !item.url
+        ){
+
+          return;
+
+        }
 
 
-          const safeName =
-            String(
-              item.filename ||
-              'Hình ảnh PKTY Thanh Liêm'
-            );
+        const url =
+          String(
+            item.url
+          );
 
+
+        const filename =
+          String(
+            item.filename ||
+            "PKTY Thanh Liêm"
+          );
+
+
+        const type =
+          item.type;
+
+
+        /*
+          VIDEO
+        */
+
+        if(
+          type === "video"
+        ){
 
           html += `
 
-            <a
+            <div
               class="gallery-card"
-              href="${safeUrl}"
-              target="_blank"
-              rel="noopener"
             >
 
-              <img
-                src="${safeUrl}"
-                alt="${safeName}"
-                loading="lazy"
+              <span class="video-badge">
+                ▶ VIDEO
+              </span>
+
+              <video
+                controls
+                preload="metadata"
+                playsinline
               >
 
-            </a>
+                <source
+                  src="${url}"
+                >
+
+                Trình duyệt của bạn không hỗ trợ video.
+
+              </video>
+
+              <span class="media-label">
+                🎬 ${filename}
+              </span>
+
+            </div>
 
           `;
 
-        }
-      );
+          return;
 
-    }
+        }
+
+
+        /*
+          IMAGE
+        */
+
+        html += `
+
+          <a
+            class="gallery-card"
+            href="${url}"
+            target="_blank"
+            rel="noopener"
+          >
+
+            <img
+              src="${url}"
+              alt="${filename}"
+              loading="lazy"
+            >
+
+            <span class="media-label">
+              📷 ${filename}
+            </span>
+
+          </a>
+
+        `;
+
+      }
+    );
 
 
     gallery.innerHTML =
@@ -2529,7 +2844,7 @@ async function loadGallery(){
   }catch(error){
 
     console.error(
-      'Gallery error:',
+      "Gallery error:",
       error
     );
 
@@ -2539,11 +2854,11 @@ async function loadGallery(){
 
 
 /*
-  Chạy sau khi trang tải xong.
+  Chờ trang tải xong
 */
 
 document.addEventListener(
-  'DOMContentLoaded',
+  "DOMContentLoaded",
   function(){
 
     loadGallery();
