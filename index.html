@@ -1,8 +1,22 @@
 <!-- ==================================================
-     GALLERY / VIDEO LOADER
+     GALLERY SLIDESHOW / IMAGE + VIDEO
+     PKTY THANH LIÊM
 ================================================== -->
 
 <script>
+
+let galleryItems = [];
+
+let galleryIndex = 0;
+
+let galleryTimer = null;
+
+const GALLERY_INTERVAL = 4000;
+
+
+/* ==================================================
+   LOAD GALLERY
+================================================== */
 
 async function loadGallery(){
 
@@ -13,7 +27,9 @@ async function loadGallery(){
 
 
   if(!gallery){
+
     return;
+
   }
 
 
@@ -28,9 +44,7 @@ async function loadGallery(){
       );
 
 
-    if(
-      !response.ok
-    ){
+    if(!response.ok){
 
       throw new Error(
         "Không tải được gallery"
@@ -43,68 +57,102 @@ async function loadGallery(){
       await response.json();
 
 
-    let html = "";
-
-
     /*
-      Ảnh mặt tiền cố định
+      ẢNH MẶT TIỀN CỐ ĐỊNH
+      Luôn nằm đầu slideshow
     */
 
-    html += `
+    galleryItems = [
 
-      <a
-        class="gallery-card gallery-feature"
-        href="mat-tien-phong-kham.jpg"
-        target="_blank"
-        rel="noopener"
-      >
+      {
+        type:"image",
 
-        <img
-          src="mat-tien-phong-kham.jpg"
-          alt="Mặt tiền Phòng khám Thú y PKTY Thanh Liêm"
-        >
+        url:
+          "mat-tien-phong-kham.jpg",
 
-        <span class="media-label">
-          📷 Phòng khám
-        </span>
+        fixed:true
+      }
 
-      </a>
-
-    `;
+    ];
 
 
     /*
-      Nếu chưa có media upload
+      THÊM ẢNH / VIDEO UPLOAD
+
+      /api/gallery đã trả về
+      đúng thứ tự được lưu
+      trong admin.
     */
 
     if(
-      !Array.isArray(media) ||
-      media.length === 0
+      Array.isArray(media)
     ){
 
-      gallery.innerHTML =
-        html +
-        `
+      media.forEach(
+        function(item){
 
-          <div class="gallery-empty">
+          if(
+            !item ||
+            !item.url
+          ){
 
-            <div style="font-size:42px">
-              🐾
-            </div>
+            return;
 
-            <b>
-              Hình ảnh & video đang được cập nhật
-            </b>
+          }
 
-            <br>
 
-            <span>
-              Phòng khám sẽ cập nhật thêm những khoảnh khắc mới.
-            </span>
+          galleryItems.push({
 
+            type:
+              item.type === "video"
+                ? "video"
+                : "image",
+
+            url:
+              String(
+                item.url
+              ),
+
+            filename:
+              item.filename || ""
+
+          });
+
+        }
+      );
+
+    }
+
+
+    /*
+      KHÔNG CÓ MEDIA
+    */
+
+    if(
+      galleryItems.length === 0
+    ){
+
+      gallery.innerHTML = `
+
+        <div class="gallery-empty">
+
+          <div style="font-size:42px">
+            🐾
           </div>
 
-        `;
+          <b>
+            Hình ảnh & video đang được cập nhật
+          </b>
+
+          <br>
+
+          <span>
+            Phòng khám sẽ cập nhật thêm những khoảnh khắc mới.
+          </span>
+
+        </div>
+
+      `;
 
       return;
 
@@ -112,101 +160,179 @@ async function loadGallery(){
 
 
     /*
-      Render từng ảnh/video
+      TẠO GIAO DIỆN SLIDESHOW
     */
 
-    media.forEach(
-      function(item){
+    gallery.innerHTML = `
 
-        if(
-          !item ||
-          !item.url
-        ){
+      <div
+        class="gallery-slider"
+        id="gallerySlider"
+      >
 
-          return;
-
-        }
-
-
-        const url =
-          String(
-            item.url
-          );
-
-        const type =
-          item.type;
+        <button
+          type="button"
+          class="gallery-arrow gallery-prev"
+          id="galleryPrev"
+          aria-label="Ảnh trước"
+        >
+          ‹
+        </button>
 
 
-        /*
-          VIDEO
-        */
-
-        if(
-          type === "video"
-        ){
-
-          html += `
-
-            <div
-              class="gallery-card"
-            >
-
-              <span class="video-badge">
-                ▶ VIDEO
-              </span>
-
-              <video
-                controls
-                preload="metadata"
-                playsinline
-              >
-
-                <source
-                  src="${url}"
-                >
-
-                Trình duyệt của bạn không hỗ trợ video.
-
-              </video>
-
-            </div>
-
-          `;
-
-          return;
-
-        }
+        <div
+          class="gallery-slide"
+          id="gallerySlide"
+        ></div>
 
 
-        /*
-          IMAGE
-        */
+        <button
+          type="button"
+          class="gallery-arrow gallery-next"
+          id="galleryNext"
+          aria-label="Ảnh tiếp theo"
+        >
+          ›
+        </button>
 
-        html += `
 
-          <a
-            class="gallery-card"
-            href="${url}"
-            target="_blank"
-            rel="noopener"
-          >
+        <div
+          class="gallery-dots"
+          id="galleryDots"
+        ></div>
 
-            <img
-              src="${url}"
-              alt="Ảnh tại PKTY Thanh Liêm"
-              loading="lazy"
-            >
+      </div>
 
-          </a>
+    `;
 
-        `;
 
-      }
+    /*
+      TẠO DOTS
+    */
+
+    createGalleryDots();
+
+
+    /*
+      HIỆN SLIDE ĐẦU TIÊN
+    */
+
+    showGallerySlide(
+      0
     );
 
 
-    gallery.innerHTML =
-      html;
+    /*
+      NÚT PREVIOUS
+    */
+
+    const prevButton =
+      document.getElementById(
+        "galleryPrev"
+      );
+
+
+    if(prevButton){
+
+      prevButton.addEventListener(
+        "click",
+        function(){
+
+          prevGallerySlide();
+
+        }
+      );
+
+    }
+
+
+    /*
+      NÚT NEXT
+    */
+
+    const nextButton =
+      document.getElementById(
+        "galleryNext"
+      );
+
+
+    if(nextButton){
+
+      nextButton.addEventListener(
+        "click",
+        function(){
+
+          nextGallerySlide();
+
+        }
+      );
+
+    }
+
+
+    /*
+      TẠM DỪNG KHI RÊ CHUỘT
+    */
+
+    const slider =
+      document.getElementById(
+        "gallerySlider"
+      );
+
+
+    if(slider){
+
+      slider.addEventListener(
+        "mouseenter",
+        function(){
+
+          stopGalleryAutoPlay();
+
+        }
+      );
+
+
+      slider.addEventListener(
+        "mouseleave",
+        function(){
+
+          startGalleryAutoPlay();
+
+        }
+      );
+
+
+      /*
+        MOBILE:
+        chạm vào thì tạm dừng
+      */
+
+      slider.addEventListener(
+        "touchstart",
+        function(){
+
+          stopGalleryAutoPlay();
+
+        },
+        {
+          passive:true
+        }
+      );
+
+
+      slider.addEventListener(
+        "touchend",
+        function(){
+
+          startGalleryAutoPlay();
+
+        },
+        {
+          passive:true
+        }
+      );
+
+    }
 
 
   }catch(error){
@@ -216,14 +342,607 @@ async function loadGallery(){
       error
     );
 
+
+    gallery.innerHTML = `
+
+      <div class="gallery-empty">
+
+        <div style="font-size:42px">
+          🐾
+        </div>
+
+        <b>
+          Không thể tải hình ảnh
+        </b>
+
+        <br>
+
+        <span>
+          Vui lòng thử lại sau.
+        </span>
+
+      </div>
+
+    `;
+
   }
 
 }
 
 
-/*
-  Chờ trang tải xong
-*/
+/* ==================================================
+   HIỆN SLIDE
+================================================== */
+
+function showGallerySlide(
+  index
+){
+
+  const slide =
+    document.getElementById(
+      "gallerySlide"
+    );
+
+
+  if(!slide){
+
+    return;
+
+  }
+
+
+  if(
+    !galleryItems.length
+  ){
+
+    return;
+
+  }
+
+
+  /*
+    QUAY VÒNG
+  */
+
+  if(
+    index < 0
+  ){
+
+    index =
+      galleryItems.length - 1;
+
+  }
+
+
+  if(
+    index >=
+    galleryItems.length
+  ){
+
+    index = 0;
+
+  }
+
+
+  galleryIndex =
+    index;
+
+
+  /*
+    DỪNG VIDEO CŨ
+  */
+
+  const oldVideo =
+    slide.querySelector(
+      "video"
+    );
+
+
+  if(oldVideo){
+
+    try{
+
+      oldVideo.pause();
+
+      oldVideo.currentTime = 0;
+
+    }catch(error){}
+
+  }
+
+
+  /*
+    XÓA TIMER CŨ
+  */
+
+  stopGalleryAutoPlay();
+
+
+  const item =
+    galleryItems[
+      galleryIndex
+    ];
+
+
+  /*
+    ================================================
+    VIDEO
+    ================================================
+  */
+
+  if(
+    item.type === "video"
+  ){
+
+    slide.innerHTML = `
+
+      <div
+        class="gallery-media-wrap"
+      >
+
+        <video
+          class="gallery-media gallery-video"
+          autoplay
+          muted
+          playsinline
+          preload="metadata"
+        >
+
+          <source
+            src="${item.url}"
+          >
+
+          Trình duyệt của bạn không hỗ trợ video.
+
+        </video>
+
+
+        <span
+          class="gallery-video-badge"
+        >
+          ▶ VIDEO
+        </span>
+
+      </div>
+
+    `;
+
+
+    const video =
+      slide.querySelector(
+        "video"
+      );
+
+
+    if(video){
+
+      /*
+        VIDEO CHẠY HẾT
+        -> CHUYỂN SLIDE TIẾP
+      */
+
+      video.addEventListener(
+        "ended",
+        function(){
+
+          nextGallerySlide();
+
+        }
+      );
+
+
+      /*
+        NẾU VIDEO LỖI
+        -> CHUYỂN SLIDE SAU 4 GIÂY
+      */
+
+      video.addEventListener(
+        "error",
+        function(){
+
+          galleryTimer =
+            setTimeout(
+              function(){
+
+                nextGallerySlide();
+
+              },
+              GALLERY_INTERVAL
+            );
+
+        }
+      );
+
+
+      /*
+        AUTOPLAY
+      */
+
+      const playPromise =
+        video.play();
+
+
+      if(
+        playPromise &&
+        typeof playPromise.catch ===
+          "function"
+      ){
+
+        playPromise.catch(
+          function(){
+
+            /*
+              Một số trình duyệt có thể
+              chặn autoplay.
+
+              Hiện tại video vẫn có
+              nút điều khiển của trình duyệt
+              nếu cần.
+            */
+
+          }
+        );
+
+      }
+
+    }
+
+  }
+
+
+  /*
+    ================================================
+    IMAGE
+    ================================================
+  */
+
+  else{
+
+    slide.innerHTML = `
+
+      <div
+        class="gallery-media-wrap"
+      >
+
+        <img
+          class="gallery-media gallery-image"
+          src="${item.url}"
+          alt="Ảnh tại PKTY Thanh Liêm"
+          loading="eager"
+        >
+
+      </div>
+
+    `;
+
+
+    /*
+      ẢNH:
+      tự chuyển sau 4 giây
+    */
+
+    galleryTimer =
+      setTimeout(
+        function(){
+
+          nextGallerySlide();
+
+        },
+        GALLERY_INTERVAL
+      );
+
+  }
+
+
+  /*
+    CẬP NHẬT DOT
+  */
+
+  updateGalleryDots();
+
+}
+
+
+/* ==================================================
+   NEXT SLIDE
+================================================== */
+
+function nextGallerySlide(){
+
+  if(
+    !galleryItems.length
+  ){
+
+    return;
+
+  }
+
+
+  galleryIndex++;
+
+
+  if(
+    galleryIndex >=
+    galleryItems.length
+  ){
+
+    galleryIndex = 0;
+
+  }
+
+
+  showGallerySlide(
+    galleryIndex
+  );
+
+}
+
+
+/* ==================================================
+   PREVIOUS SLIDE
+================================================== */
+
+function prevGallerySlide(){
+
+  if(
+    !galleryItems.length
+  ){
+
+    return;
+
+  }
+
+
+  galleryIndex--;
+
+
+  if(
+    galleryIndex < 0
+  ){
+
+    galleryIndex =
+      galleryItems.length - 1;
+
+  }
+
+
+  showGallerySlide(
+    galleryIndex
+  );
+
+}
+
+
+/* ==================================================
+   TẠO DOTS
+================================================== */
+
+function createGalleryDots(){
+
+  const dots =
+    document.getElementById(
+      "galleryDots"
+    );
+
+
+  if(!dots){
+
+    return;
+
+  }
+
+
+  dots.innerHTML = "";
+
+
+  galleryItems.forEach(
+    function(item,index){
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.type =
+        "button";
+
+
+      button.className =
+        "gallery-dot";
+
+
+      button.setAttribute(
+        "aria-label",
+        `Xem slide ${index + 1}`
+      );
+
+
+      button.addEventListener(
+        "click",
+        function(){
+
+          showGallerySlide(
+            index
+          );
+
+        }
+      );
+
+
+      dots.appendChild(
+        button
+      );
+
+    }
+  );
+
+}
+
+
+/* ==================================================
+   CẬP NHẬT DOT
+================================================== */
+
+function updateGalleryDots(){
+
+  const dots =
+    document.querySelectorAll(
+      ".gallery-dot"
+    );
+
+
+  dots.forEach(
+    function(dot,index){
+
+      if(
+        index ===
+        galleryIndex
+      ){
+
+        dot.classList.add(
+          "active"
+        );
+
+      }else{
+
+        dot.classList.remove(
+          "active"
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ==================================================
+   START AUTO PLAY
+================================================== */
+
+function startGalleryAutoPlay(){
+
+  /*
+    Nếu đang ở video:
+    KHÔNG dùng timer.
+
+    Video sẽ tự chuyển
+    khi chạy hết.
+  */
+
+  const item =
+    galleryItems[
+      galleryIndex
+    ];
+
+
+  if(
+    item &&
+    item.type === "video"
+  ){
+
+    return;
+
+  }
+
+
+  stopGalleryAutoPlay();
+
+
+  if(
+    galleryItems.length <= 1
+  ){
+
+    return;
+
+  }
+
+
+  galleryTimer =
+    setTimeout(
+      function(){
+
+        nextGallerySlide();
+
+      },
+      GALLERY_INTERVAL
+    );
+
+}
+
+
+/* ==================================================
+   STOP AUTO PLAY
+================================================== */
+
+function stopGalleryAutoPlay(){
+
+  if(
+    galleryTimer
+  ){
+
+    clearTimeout(
+      galleryTimer
+    );
+
+    galleryTimer =
+      null;
+
+  }
+
+}
+
+
+/* ==================================================
+   KHI TAB KHÔNG HIỂN THỊ
+================================================== */
+
+document.addEventListener(
+  "visibilitychange",
+  function(){
+
+    if(
+      document.hidden
+    ){
+
+      stopGalleryAutoPlay();
+
+    }else{
+
+      const item =
+        galleryItems[
+          galleryIndex
+        ];
+
+
+      /*
+        Nếu đang ở ảnh
+        thì chạy lại timer.
+
+        Nếu đang video
+        thì không ép chuyển.
+      */
+
+      if(
+        item &&
+        item.type === "image"
+      ){
+
+        startGalleryAutoPlay();
+
+      }
+
+    }
+
+  }
+);
+
+
+/* ==================================================
+   LOAD KHI TRANG ĐÃ SẴN SÀNG
+================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
