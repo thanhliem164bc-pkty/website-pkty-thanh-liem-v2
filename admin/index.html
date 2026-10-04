@@ -185,6 +185,25 @@
       overflow:hidden;
       border:1px solid #eadfce;
       min-height:170px;
+      cursor:grab;
+      user-select:none;
+      transition:
+        transform .18s ease,
+        opacity .18s ease,
+        box-shadow .18s ease;
+    }
+
+    .media-card:active{
+      cursor:grabbing;
+    }
+
+    .media-card.dragging{
+      opacity:.45;
+      transform:scale(.98);
+    }
+
+    .media-card.drag-over{
+      box-shadow:0 0 0 3px #6f452c inset;
     }
 
     .media-card img,
@@ -200,6 +219,7 @@
       position:absolute;
       top:8px;
       right:8px;
+      z-index:2;
       background:rgba(0,0,0,.7);
       color:#fff;
       padding:5px 8px;
@@ -208,7 +228,18 @@
       font-weight:800;
     }
 
+    .media-order{
+      padding:8px 10px;
+      font-size:12px;
+      font-weight:800;
+      color:#6f452c;
+      background:#fffaf2;
+      border-top:1px solid #eadfce;
+      text-align:center;
+    }
+
     @media(max-width:850px){
+
       .grid{
         grid-template-columns:1fr 1fr;
       }
@@ -216,9 +247,11 @@
       .media-grid{
         grid-template-columns:repeat(2,1fr);
       }
+
     }
 
     @media(max-width:520px){
+
       .grid{
         grid-template-columns:1fr;
       }
@@ -230,6 +263,7 @@
       header{
         font-size:13px;
       }
+
     }
   </style>
 </head>
@@ -237,6 +271,7 @@
 <body>
 
 <header>
+
   <span>
     PHÒNG KHÁM THÚ Y PKTY THANH LIÊM — QUẢN TRỊ
   </span>
@@ -244,13 +279,20 @@
   <a href="../">
     Xem website
   </a>
+
 </header>
 
 
 <main>
 
-<!-- LOGIN -->
-<section id="login" class="card">
+<!-- ==================================================
+     LOGIN
+================================================== -->
+
+<section
+  id="login"
+  class="card"
+>
 
   <h2>
     Đăng nhập quản trị
@@ -286,7 +328,10 @@
 </section>
 
 
-<!-- PANEL -->
+<!-- ==================================================
+     PANEL
+================================================== -->
+
 <section
   id="panel"
   class="hidden"
@@ -339,7 +384,10 @@
   </div>
 
 
-<!-- DASHBOARD -->
+<!-- ==================================================
+     DASHBOARD
+================================================== -->
+
 <section
   id="dashboard"
   class="hidden"
@@ -351,31 +399,54 @@
   >
 
     <div class="card">
+
       <div class="muted">
         Lịch hôm nay
       </div>
-      <h2 id="sToday">0</h2>
+
+      <h2 id="sToday">
+        0
+      </h2>
+
     </div>
 
+
     <div class="card">
+
       <div class="muted">
         Chưa xác nhận
       </div>
-      <h2 id="sNew">0</h2>
+
+      <h2 id="sNew">
+        0
+      </h2>
+
     </div>
 
+
     <div class="card">
+
       <div class="muted">
         Đã xác nhận
       </div>
-      <h2 id="sConfirmed">0</h2>
+
+      <h2 id="sConfirmed">
+        0
+      </h2>
+
     </div>
 
+
     <div class="card">
+
       <div class="muted">
         Tổng lịch hẹn
       </div>
-      <h2 id="sTotal">0</h2>
+
+      <h2 id="sTotal">
+        0
+      </h2>
+
     </div>
 
   </div>
@@ -405,7 +476,10 @@
 </section>
 
 
-<!-- CONTENT -->
+<!-- ==================================================
+     CONTENT
+================================================== -->
+
 <section id="content">
 
   <div class="card">
@@ -545,7 +619,10 @@
 </section>
 
 
-<!-- APPOINTMENTS -->
+<!-- ==================================================
+     APPOINTMENTS
+================================================== -->
+
 <section
   id="appointments"
   class="hidden"
@@ -575,13 +652,17 @@
 </section>
 
 
-<!-- MEDIA -->
+<!-- ==================================================
+     MEDIA
+================================================== -->
+
 <section
   id="media"
   class="hidden"
 >
 
   <!-- UPLOAD -->
+
   <div class="card">
 
     <h2>
@@ -654,6 +735,7 @@
 
 
   <!-- MEDIA LIST -->
+
   <div class="card">
 
     <div class="top">
@@ -662,18 +744,35 @@
         📚 Thư viện hiện tại
       </h2>
 
-      <button
-        class="secondary"
-        onclick="loadMedia()"
-      >
-        ↻ Làm mới
-      </button>
+      <div>
+
+        <button
+          class="secondary"
+          onclick="loadMedia()"
+        >
+          ↻ Làm mới
+        </button>
+
+        <button
+          class="primary"
+          onclick="saveMediaOrder()"
+        >
+          💾 Lưu thứ tự
+        </button>
+
+      </div>
 
     </div>
 
+
     <p class="muted">
       Các ảnh và video đang có trên website.
+      <b>
+        Kéo thả để sắp xếp thứ tự hiển thị ngoài trang chủ,
+        sau đó bấm "Lưu thứ tự".
+      </b>
     </p>
+
 
     <div
       id="mediaGrid"
@@ -685,7 +784,10 @@
 </section>
 
 
-<!-- NOTIFY -->
+<!-- ==================================================
+     NOTIFY
+================================================== -->
+
 <section
   id="notify"
   class="hidden"
@@ -765,7 +867,14 @@ const fields = [
 ];
 
 
-async function api(url,opt={}){
+/* ==================================================
+   API
+================================================== */
+
+async function api(
+  url,
+  opt={}
+){
 
   const response =
     await fetch(
@@ -775,54 +884,71 @@ async function api(url,opt={}){
           "Content-Type":
             "application/json"
         },
+
         ...opt
       }
     );
 
+
   const data =
     await response.json();
+
 
   if(!response.ok){
 
     throw new Error(
-      data.error || "Lỗi"
+      data.error ||
+      "Lỗi"
     );
 
   }
+
 
   return data;
 
 }
 
 
-/* =========================
+/* ==================================================
    KIỂM TRA ĐĂNG NHẬP
-   ========================= */
+================================================== */
 
 async function check(){
 
   try{
 
     const me =
-      await api("/api/me");
+      await api(
+        "/api/me"
+      );
 
 
     if(me.loggedIn){
 
       document
-        .getElementById("login")
+        .getElementById(
+          "login"
+        )
         .classList
-        .add("hidden");
+        .add(
+          "hidden"
+        );
 
 
       document
-        .getElementById("panel")
+        .getElementById(
+          "panel"
+        )
         .classList
-        .remove("hidden");
+        .remove(
+          "hidden"
+        );
 
 
       d =
-        await api("/api/site");
+        await api(
+          "/api/site"
+        );
 
 
       render();
@@ -842,9 +968,9 @@ async function check(){
 }
 
 
-/* =========================
+/* ==================================================
    LOGIN
-   ========================= */
+================================================== */
 
 async function doLogin(){
 
@@ -857,21 +983,34 @@ async function doLogin(){
 
         body:
           JSON.stringify({
+
             username:
-              document.getElementById("user").value,
+              document
+                .getElementById(
+                  "user"
+                )
+                .value,
 
             password:
-              document.getElementById("pass").value
+              document
+                .getElementById(
+                  "pass"
+                )
+                .value
+
           })
       }
     );
+
 
     await check();
 
   }catch(e){
 
     document
-      .getElementById("loginMsg")
+      .getElementById(
+        "loginMsg"
+      )
       .textContent =
         e.message;
 
@@ -880,29 +1019,40 @@ async function doLogin(){
 }
 
 
-/* =========================
+/* ==================================================
    CONTENT
-   ========================= */
+================================================== */
 
 function render(){
 
-  fields.forEach(function(k){
+  fields.forEach(
+    function(k){
 
-    const element =
-      document.getElementById(k);
+      const element =
+        document.getElementById(
+          k
+        );
 
-    if(element){
 
-      element.value =
-        d[k] || "";
+      if(element){
+
+        element.value =
+          d[k] || "";
+
+      }
 
     }
+  );
 
-  });
 
-  renderList("services");
+  renderList(
+    "services"
+  );
 
-  renderList("spa");
+
+  renderList(
+    "spa"
+  );
 
 }
 
@@ -910,34 +1060,45 @@ function render(){
 function renderList(k){
 
   const element =
-    document.getElementById(k);
+    document.getElementById(
+      k
+    );
 
-  if(!element) return;
+
+  if(!element){
+
+    return;
+
+  }
 
 
   element.innerHTML =
     (d[k] || [])
-      .map(function(x,i){
+      .map(
+        function(x,i){
 
-        return `
-          <div class="item">
+          return `
 
-            <input
-              value="${esc(x)}"
-              oninput="d['${k}'][${i}]=this.value"
-            >
+            <div class="item">
 
-            <button
-              class="danger"
-              onclick="d['${k}'].splice(${i},1);renderList('${k}')"
-            >
-              Xóa
-            </button>
+              <input
+                value="${esc(x)}"
+                oninput="d['${k}'][${i}]=this.value"
+              >
 
-          </div>
-        `;
+              <button
+                class="danger"
+                onclick="d['${k}'].splice(${i},1);renderList('${k}')"
+              >
+                Xóa
+              </button>
 
-      })
+            </div>
+
+          `;
+
+        }
+      )
       .join("");
 
 }
@@ -948,9 +1109,11 @@ function add(k){
   d[k] =
     d[k] || [];
 
+
   d[k].push(
     "Dịch vụ mới"
   );
+
 
   renderList(k);
 
@@ -959,30 +1122,47 @@ function add(k){
 
 function esc(s){
 
-  return String(s ?? "")
-    .replace(/[&<>"']/g,function(m){
+  return String(
+    s ?? ""
+  )
+  .replace(
+    /[&<>"']/g,
+    function(m){
 
       return {
+
         "&":"&amp;",
+
         "<":"&lt;",
+
         ">":"&gt;",
+
         '"':"&quot;",
+
         "'":"&#039;"
+
       }[m];
 
-    });
+    }
+  );
 
 }
 
 
 async function save(){
 
-  fields.forEach(function(k){
+  fields.forEach(
+    function(k){
 
-    d[k] =
-      document.getElementById(k).value;
+      d[k] =
+        document
+          .getElementById(
+            k
+          )
+          .value;
 
-  });
+    }
+  );
 
 
   try{
@@ -999,30 +1179,45 @@ async function save(){
       );
 
 
-    msg.textContent =
-      " ✓ Đã lưu";
+    document
+      .getElementById(
+        "msg"
+      )
+      .textContent =
+        " ✓ Đã lưu";
 
 
-    setTimeout(function(){
+    setTimeout(
+      function(){
 
-      msg.textContent = "";
+        document
+          .getElementById(
+            "msg"
+          )
+          .textContent = "";
 
-    },2500);
+      },
+      2500
+    );
 
 
   }catch(e){
 
-    msg.textContent =
-      e.message;
+    document
+      .getElementById(
+        "msg"
+      )
+      .textContent =
+        e.message;
 
   }
 
 }
 
 
-/* =========================
+/* ==================================================
    CHUYỂN TAB
-   ========================= */
+================================================== */
 
 function showTab(t){
 
@@ -1033,146 +1228,225 @@ function showTab(t){
     "media",
     "notify"
   ]
-  .forEach(function(x){
+  .forEach(
+    function(x){
 
-    document
-      .getElementById(x)
-      .classList
-      .toggle(
-        "hidden",
-        x !== t
-      );
+      document
+        .getElementById(x)
+        .classList
+        .toggle(
+          "hidden",
+          x !== t
+        );
 
-  });
+    }
+  );
 
 
-  if(t === "dashboard"){
+  if(
+    t === "dashboard"
+  ){
+
     loadDashboard();
+
   }
 
-  if(t === "appointments"){
+
+  if(
+    t === "appointments"
+  ){
+
     loadAppointments();
+
   }
 
-  if(t === "media"){
+
+  if(
+    t === "media"
+  ){
+
     loadMedia();
+
   }
 
-  if(t === "notify"){
+
+  if(
+    t === "notify"
+  ){
+
     loadNotify();
+
   }
 
 }
 
 
-/* =========================
+/* ==================================================
    DASHBOARD
-   ========================= */
+================================================== */
 
 async function loadDashboard(){
 
   try{
 
     const s =
-      await api("/api/dashboard");
+      await api(
+        "/api/dashboard"
+      );
 
 
-    document.getElementById("sToday")
-      .textContent = s.today;
-
-    document.getElementById("sNew")
-      .textContent = s.newCount;
-
-    document.getElementById("sConfirmed")
-      .textContent = s.confirmed;
-
-    document.getElementById("sTotal")
-      .textContent = s.total;
+    document
+      .getElementById(
+        "sToday"
+      )
+      .textContent =
+        s.today;
 
 
-    document.getElementById("upcoming")
+    document
+      .getElementById(
+        "sNew"
+      )
+      .textContent =
+        s.newCount;
+
+
+    document
+      .getElementById(
+        "sConfirmed"
+      )
+      .textContent =
+        s.confirmed;
+
+
+    document
+      .getElementById(
+        "sTotal"
+      )
+      .textContent =
+        s.total;
+
+
+    document
+      .getElementById(
+        "upcoming"
+      )
       .innerHTML =
+
         s.upcoming.length
 
         ?
 
         s.upcoming
-          .map(function(x){
+          .map(
+            function(x){
 
-            return `
-              <div class="appt">
+              return `
 
-                <div class="top">
+                <div class="appt">
 
-                  <strong>
-                    ${esc(x.date)}
-                    —
-                    ${esc(x.time)}
+                  <div class="top">
+
+                    <strong>
+                      ${esc(x.date)}
+                      —
+                      ${esc(x.time)}
+                      ·
+                      ${esc(x.petName)}
+                    </strong>
+
+                    <span class="badge">
+                      ${esc(x.status)}
+                    </span>
+
+                  </div>
+
+
+                  <div>
+
+                    <b>
+                      ${esc(x.ownerName)}
+                    </b>
+
                     ·
-                    ${esc(x.petName)}
-                  </strong>
 
-                  <span class="badge">
-                    ${esc(x.status)}
-                  </span>
+                    <a
+                      href="tel:${esc(x.phone)}"
+                    >
+                      ${esc(x.phone)}
+                    </a>
 
-                </div>
+                  </div>
 
 
-                <div>
-                  <b>
-                    ${esc(x.ownerName)}
-                  </b>
+                  <div>
 
-                  ·
+                    ${esc(
+                      x.service ||
+                      "Chưa chọn dịch vụ"
+                    )}
 
-                  <a
-                    href="tel:${esc(x.phone)}"
+                    ·
+
+                    ${esc(
+                      x.petType ||
+                      ""
+                    )}
+
+                  </div>
+
+
+                  <div
+                    style="margin-top:6px"
                   >
-                    ${esc(x.phone)}
-                  </a>
-                </div>
+
+                    <a
+                      href="tel:${esc(x.phone)}"
+                    >
+
+                      <button
+                        class="primary"
+                      >
+                        📞 Gọi
+                      </button>
+
+                    </a>
 
 
-                <div>
-                  ${esc(x.service || "Chưa chọn dịch vụ")}
-                  ·
-                  ${esc(x.petType || "")}
-                </div>
+                    <a
+                      href="https://zalo.me/${esc(
+                        x.phone.replace(
+                          /\D/g,
+                          ""
+                        )
+                      )}"
+                      target="_blank"
+                    >
+
+                      <button
+                        class="secondary"
+                      >
+                        💬 Zalo
+                      </button>
+
+                    </a>
 
 
-                <div style="margin-top:6px">
-
-                  <a
-                    href="tel:${esc(x.phone)}"
-                  >
-                    <button class="primary">
-                      📞 Gọi
+                    <button
+                      class="secondary"
+                      onclick="showTab('appointments')"
+                    >
+                      Chi tiết
                     </button>
-                  </a>
 
-                  <a
-                    href="https://zalo.me/${esc(x.phone.replace(/\D/g,''))}"
-                    target="_blank"
-                  >
-                    <button class="secondary">
-                      💬 Zalo
-                    </button>
-                  </a>
-
-                  <button
-                    class="secondary"
-                    onclick="showTab('appointments')"
-                  >
-                    Chi tiết
-                  </button>
+                  </div>
 
                 </div>
 
-              </div>
-            `;
+              `;
 
-          })
+            }
+          )
           .join("")
 
         :
@@ -1182,28 +1456,38 @@ async function loadDashboard(){
 
   }catch(e){
 
-    document.getElementById("upcoming")
+    document
+      .getElementById(
+        "upcoming"
+      )
       .innerHTML =
-        "<p>"+e.message+"</p>";
+        "<p>" +
+        e.message +
+        "</p>";
 
   }
 
 }
 
 
-/* =========================
+/* ==================================================
    APPOINTMENTS
-   ========================= */
+================================================== */
 
 async function loadAppointments(){
 
   try{
 
     const appointments =
-      await api("/api/appointments");
+      await api(
+        "/api/appointments"
+      );
 
 
-    document.getElementById("apptList")
+    document
+      .getElementById(
+        "apptList"
+      )
       .innerHTML =
 
         appointments.length
@@ -1211,127 +1495,184 @@ async function loadAppointments(){
         ?
 
         appointments
-          .map(function(x){
+          .map(
+            function(x){
 
-            return `
-              <div class="appt">
+              return `
 
-                <div class="top">
+                <div class="appt">
 
-                  <strong>
-                    ${esc(x.date)}
-                    —
-                    ${esc(x.time)}
+                  <div class="top">
+
+                    <strong>
+
+                      ${esc(x.date)}
+
+                      —
+
+                      ${esc(x.time)}
+
+                      ·
+
+                      ${esc(x.petName)}
+
+                    </strong>
+
+
+                    <span class="badge">
+                      ${esc(x.status)}
+                    </span>
+
+                  </div>
+
+
+                  <div>
+
+                    <b>
+                      Khách:
+                    </b>
+
+                    ${esc(
+                      x.ownerName
+                    )}
+
                     ·
-                    ${esc(x.petName)}
-                  </strong>
 
-                  <span class="badge">
-                    ${esc(x.status)}
-                  </span>
+                    <a
+                      href="tel:${esc(x.phone)}"
+                    >
+                      ${esc(x.phone)}
+                    </a>
 
-                </div>
-
-
-                <div>
-                  <b>Khách:</b>
-
-                  ${esc(x.ownerName)}
-
-                  ·
-
-                  <a
-                    href="tel:${esc(x.phone)}"
-                  >
-                    ${esc(x.phone)}
-                  </a>
-                </div>
+                  </div>
 
 
-                <div>
+                  <div>
 
-                  <b>
-                    Thú cưng:
-                  </b>
+                    <b>
+                      Thú cưng:
+                    </b>
 
-                  ${esc(x.petType || "")}
+                    ${esc(
+                      x.petType ||
+                      ""
+                    )}
 
-                  ·
+                    ·
 
-                  <b>
-                    Dịch vụ:
-                  </b>
+                    <b>
+                      Dịch vụ:
+                    </b>
 
-                  ${esc(x.service || "")}
+                    ${esc(
+                      x.service ||
+                      ""
+                    )}
 
-                </div>
-
-
-                ${
-                  x.note
-                  ?
-                  `
-                    <div>
-                      <b>Ghi chú:</b>
-                      ${esc(x.note)}
-                    </div>
-                  `
-                  :
-                  ""
-                }
+                  </div>
 
 
-                <div class="muted">
                   ${
-                    new Date(
-                      x.createdAt
-                    ).toLocaleString("vi-VN")
+                    x.note
+                    ?
+
+                    `
+
+                      <div>
+
+                        <b>
+                          Ghi chú:
+                        </b>
+
+                        ${esc(x.note)}
+
+                      </div>
+
+                    `
+
+                    :
+
+                    ""
                   }
+
+
+                  <div class="muted">
+
+                    ${
+                      new Date(
+                        x.createdAt
+                      )
+                      .toLocaleString(
+                        "vi-VN"
+                      )
+                    }
+
+                  </div>
+
+
+                  <select
+                    onchange="updateStatus('${x.id}',this.value)"
+                  >
+
+                    <option
+                      ${
+                        x.status === "Mới"
+                          ? "selected"
+                          : ""
+                      }
+                    >
+                      Mới
+                    </option>
+
+
+                    <option
+                      ${
+                        x.status === "Đã xác nhận"
+                          ? "selected"
+                          : ""
+                      }
+                    >
+                      Đã xác nhận
+                    </option>
+
+
+                    <option
+                      ${
+                        x.status === "Đã khám"
+                          ? "selected"
+                          : ""
+                      }
+                    >
+                      Đã khám
+                    </option>
+
+
+                    <option
+                      ${
+                        x.status === "Đã hủy"
+                          ? "selected"
+                          : ""
+                      }
+                    >
+                      Đã hủy
+                    </option>
+
+                  </select>
+
+
+                  <button
+                    class="danger"
+                    onclick="deleteAppt('${x.id}')"
+                  >
+                    Xóa
+                  </button>
+
                 </div>
 
+              `;
 
-                <select
-                  onchange="updateStatus('${x.id}',this.value)"
-                >
-
-                  <option
-                    ${x.status === "Mới" ? "selected" : ""}
-                  >
-                    Mới
-                  </option>
-
-                  <option
-                    ${x.status === "Đã xác nhận" ? "selected" : ""}
-                  >
-                    Đã xác nhận
-                  </option>
-
-                  <option
-                    ${x.status === "Đã khám" ? "selected" : ""}
-                  >
-                    Đã khám
-                  </option>
-
-                  <option
-                    ${x.status === "Đã hủy" ? "selected" : ""}
-                  >
-                    Đã hủy
-                  </option>
-
-                </select>
-
-
-                <button
-                  class="danger"
-                  onclick="deleteAppt('${x.id}')"
-                >
-                  Xóa
-                </button>
-
-              </div>
-            `;
-
-          })
+            }
+          )
           .join("")
 
         :
@@ -1341,19 +1682,28 @@ async function loadAppointments(){
 
   }catch(e){
 
-    document.getElementById("apptList")
+    document
+      .getElementById(
+        "apptList"
+      )
       .innerHTML =
-        "<p>"+e.message+"</p>";
+        "<p>" +
+        e.message +
+        "</p>";
 
   }
 
 }
 
 
-async function updateStatus(id,status){
+async function updateStatus(
+  id,
+  status
+){
 
   await api(
-    "/api/appointments/"+id,
+    "/api/appointments/" +
+    id,
     {
       method:"PUT",
 
@@ -1364,12 +1714,15 @@ async function updateStatus(id,status){
     }
   );
 
+
   loadAppointments();
 
 }
 
 
-async function deleteAppt(id){
+async function deleteAppt(
+  id
+){
 
   if(
     confirm(
@@ -1378,11 +1731,13 @@ async function deleteAppt(id){
   ){
 
     await api(
-      "/api/appointments/"+id,
+      "/api/appointments/" +
+      id,
       {
         method:"DELETE"
       }
     );
+
 
     loadAppointments();
 
@@ -1391,14 +1746,17 @@ async function deleteAppt(id){
 }
 
 
-/* =========================
+/* ==================================================
    PREVIEW FILE
-   ========================= */
+================================================== */
 
 function previewFile(){
 
   const input =
-    document.getElementById("image");
+    document.getElementById(
+      "image"
+    );
+
 
   const file =
     input.files[0];
@@ -1409,10 +1767,12 @@ function previewFile(){
       "previewWrap"
     );
 
+
   const image =
     document.getElementById(
       "previewImage"
     );
+
 
   const video =
     document.getElementById(
@@ -1420,38 +1780,58 @@ function previewFile(){
     );
 
 
-  image.classList.add("hidden");
+  image.classList.add(
+    "hidden"
+  );
 
-  video.classList.add("hidden");
+
+  video.classList.add(
+    "hidden"
+  );
+
 
   video.pause();
 
-  video.removeAttribute("src");
+
+  video.removeAttribute(
+    "src"
+  );
+
 
   video.load();
 
 
   if(!file){
 
-    wrap.classList.add("hidden");
+    wrap.classList.add(
+      "hidden"
+    );
 
     return;
 
   }
 
 
-  wrap.classList.remove("hidden");
+  wrap.classList.remove(
+    "hidden"
+  );
 
 
   const url =
-    URL.createObjectURL(file);
+    URL.createObjectURL(
+      file
+    );
 
 
   if(
-    file.type.startsWith("video/")
+    file.type.startsWith(
+      "video/"
+    )
   ){
 
-    video.src = url;
+    video.src =
+      url;
+
 
     video.classList.remove(
       "hidden"
@@ -1459,7 +1839,9 @@ function previewFile(){
 
   }else{
 
-    image.src = url;
+    image.src =
+      url;
+
 
     image.classList.remove(
       "hidden"
@@ -1470,17 +1852,21 @@ function previewFile(){
 }
 
 
-/* =========================
+/* ==================================================
    UPLOAD ẢNH / VIDEO
-   ========================= */
+================================================== */
 
 async function uploadImage(){
 
   const input =
-    document.getElementById("image");
+    document.getElementById(
+      "image"
+    );
+
 
   const file =
     input.files[0];
+
 
   const message =
     document.getElementById(
@@ -1499,22 +1885,37 @@ async function uploadImage(){
 
 
   const allowedImages = [
+
     "image/jpeg",
+
     "image/png",
+
     "image/webp",
+
     "image/gif"
+
   ];
 
+
   const allowedVideos = [
+
     "video/mp4",
+
     "video/webm",
+
     "video/quicktime"
+
   ];
 
 
   if(
-    !allowedImages.includes(file.type) &&
-    !allowedVideos.includes(file.type)
+    !allowedImages.includes(
+      file.type
+    ) &&
+
+    !allowedVideos.includes(
+      file.type
+    )
   ){
 
     message.textContent =
@@ -1527,6 +1928,7 @@ async function uploadImage(){
 
   const formData =
     new FormData();
+
 
   formData.append(
     "image",
@@ -1545,7 +1947,9 @@ async function uploadImage(){
         "/api/upload",
         {
           method:"POST",
-          body:formData
+
+          body:
+            formData
         }
       );
 
@@ -1564,39 +1968,46 @@ async function uploadImage(){
     }
 
 
-    message.innerHTML =
-      `
-        <span class="ok">
-          ✅ Đã tải lên thành công!
-        </span>
-      `;
+    message.innerHTML = `
+
+      <span class="ok">
+        ✅ Đã tải lên thành công!
+      </span>
+
+    `;
 
 
-    input.value = "";
+    input.value =
+      "";
 
 
     document
-      .getElementById("previewWrap")
+      .getElementById(
+        "previewWrap"
+      )
       .classList
-      .add("hidden");
+      .add(
+        "hidden"
+      );
 
 
-    loadMedia();
+    await loadMedia();
 
 
   }catch(e){
 
     message.textContent =
-      "❌ " + e.message;
+      "❌ " +
+      e.message;
 
   }
 
 }
 
 
-/* =========================
+/* ==================================================
    LOAD MEDIA
-   ========================= */
+================================================== */
 
 async function loadMedia(){
 
@@ -1605,14 +2016,25 @@ async function loadMedia(){
       "mediaGrid"
     );
 
-  if(!grid) return;
+
+  if(!grid){
+
+    return;
+
+  }
 
 
   try{
 
     const items =
-      await fetch("/api/gallery")
-        .then(function(r){
+      await fetch(
+        "/api/gallery",
+        {
+          cache:"no-store"
+        }
+      )
+      .then(
+        function(r){
 
           if(!r.ok){
 
@@ -1622,9 +2044,11 @@ async function loadMedia(){
 
           }
 
+
           return r.json();
 
-        });
+        }
+      );
 
 
     if(
@@ -1632,115 +2056,617 @@ async function loadMedia(){
       items.length === 0
     ){
 
-      grid.innerHTML =
-        `
-          <div
-            class="muted"
-            style="grid-column:1/-1"
-          >
-            Chưa có ảnh hoặc video được tải lên.
-          </div>
-        `;
+      grid.innerHTML = `
+
+        <div
+          class="muted"
+          style="grid-column:1/-1"
+        >
+          Chưa có ảnh hoặc video được tải lên.
+        </div>
+
+      `;
 
       return;
 
     }
 
 
+    /*
+      Render theo đúng thứ tự
+      server trả về.
+
+      data-filename dùng để gửi
+      đúng filename lên server.
+    */
+
     grid.innerHTML =
       items
-        .map(function(item){
+        .map(
+          function(item,index){
 
-          if(item.type === "video"){
+            const filename =
+              String(
+                item.filename ||
+                ""
+              );
+
+
+            const safeFilename =
+              esc(
+                filename
+              );
+
+
+            /*
+              VIDEO
+            */
+
+            if(
+              item.type === "video"
+            ){
+
+              return `
+
+                <div
+                  class="media-card"
+                  draggable="true"
+                  data-filename="${safeFilename}"
+                >
+
+                  <span
+                    class="media-type"
+                  >
+                    🎬 Video
+                  </span>
+
+
+                  <video
+                    controls
+                    preload="metadata"
+                    playsinline
+                  >
+
+                    <source
+                      src="${esc(item.url)}"
+                    >
+
+                    Trình duyệt của bạn
+                    không hỗ trợ video.
+
+                  </video>
+
+
+                  <div
+                    class="media-order"
+                  >
+                    ☰ Kéo để đổi vị trí · #${index + 1}
+                  </div>
+
+                </div>
+
+              `;
+
+            }
+
+
+            /*
+              IMAGE
+            */
 
             return `
-              <div class="media-card">
 
-                <span class="media-type">
-                  🎬 Video
+              <div
+                class="media-card"
+                draggable="true"
+                data-filename="${safeFilename}"
+              >
+
+                <span
+                  class="media-type"
+                >
+                  🖼️ Ảnh
                 </span>
 
-                <video
-                  controls
-                  preload="metadata"
-                  playsinline
+
+                <a
+                  href="${esc(item.url)}"
+                  target="_blank"
+                  rel="noopener"
                 >
-                  <source
-                    src="${item.url}"
+
+                  <img
+                    src="${esc(item.url)}"
+                    loading="lazy"
+                    alt="Ảnh gallery"
                   >
-                </video>
+
+                </a>
+
+
+                <div
+                  class="media-order"
+                >
+                  ☰ Kéo để đổi vị trí · #${index + 1}
+                </div>
 
               </div>
+
             `;
 
           }
-
-
-          return `
-            <div class="media-card">
-
-              <span class="media-type">
-                🖼️ Ảnh
-              </span>
-
-              <a
-                href="${item.url}"
-                target="_blank"
-                rel="noopener"
-              >
-
-                <img
-                  src="${item.url}"
-                  loading="lazy"
-                  alt="Ảnh gallery"
-                >
-
-              </a>
-
-            </div>
-          `;
-
-        })
+        )
         .join("");
+
+
+    setupMediaDragDrop();
 
 
   }catch(e){
 
-    grid.innerHTML =
-      `
-        <div
-          style="grid-column:1/-1"
-        >
-          ❌ ${esc(e.message)}
-        </div>
-      `;
+    grid.innerHTML = `
+
+      <div
+        style="grid-column:1/-1"
+      >
+        ❌ ${esc(e.message)}
+      </div>
+
+    `;
 
   }
 
 }
 
 
-/* =========================
+/* ==================================================
+   KÉO THẢ MEDIA
+================================================== */
+
+let draggedMediaCard =
+  null;
+
+
+function setupMediaDragDrop(){
+
+  const grid =
+    document.getElementById(
+      "mediaGrid"
+    );
+
+
+  if(!grid){
+
+    return;
+
+  }
+
+
+  const cards =
+    grid.querySelectorAll(
+      ".media-card"
+    );
+
+
+  cards.forEach(
+    function(card){
+
+      /*
+        BẮT ĐẦU KÉO
+      */
+
+      card.addEventListener(
+        "dragstart",
+        function(e){
+
+          draggedMediaCard =
+            card;
+
+
+          card.classList.add(
+            "dragging"
+          );
+
+
+          if(
+            e.dataTransfer
+          ){
+
+            e.dataTransfer.effectAllowed =
+              "move";
+
+
+            e.dataTransfer.setData(
+              "text/plain",
+              card.dataset.filename ||
+              ""
+            );
+
+          }
+
+        }
+      );
+
+
+      /*
+        KẾT THÚC KÉO
+      */
+
+      card.addEventListener(
+        "dragend",
+        function(){
+
+          card.classList.remove(
+            "dragging"
+          );
+
+
+          cards.forEach(
+            function(item){
+
+              item.classList.remove(
+                "drag-over"
+              );
+
+            }
+          );
+
+
+          draggedMediaCard =
+            null;
+
+        }
+      );
+
+
+      /*
+        ĐANG KÉO QUA CARD KHÁC
+      */
+
+      card.addEventListener(
+        "dragover",
+        function(e){
+
+          e.preventDefault();
+
+
+          if(
+            !draggedMediaCard ||
+            draggedMediaCard === card
+          ){
+
+            return;
+
+          }
+
+
+          card.classList.add(
+            "drag-over"
+          );
+
+
+          if(
+            e.dataTransfer
+          ){
+
+            e.dataTransfer.dropEffect =
+              "move";
+
+          }
+
+        }
+      );
+
+
+      /*
+        RỜI CARD
+      */
+
+      card.addEventListener(
+        "dragleave",
+        function(){
+
+          card.classList.remove(
+            "drag-over"
+          );
+
+        }
+      );
+
+
+      /*
+        THẢ CARD
+      */
+
+      card.addEventListener(
+        "drop",
+        function(e){
+
+          e.preventDefault();
+
+
+          card.classList.remove(
+            "drag-over"
+          );
+
+
+          if(
+            !draggedMediaCard ||
+            draggedMediaCard === card
+          ){
+
+            return;
+
+          }
+
+
+          const rect =
+            card.getBoundingClientRect();
+
+
+          const middle =
+            rect.top +
+            rect.height / 2;
+
+
+          /*
+            Thả nửa trên:
+            đưa card kéo vào trước.
+
+            Thả nửa dưới:
+            đưa card kéo vào sau.
+          */
+
+          if(
+            e.clientY <
+            middle
+          ){
+
+            grid.insertBefore(
+              draggedMediaCard,
+              card
+            );
+
+          }else{
+
+            grid.insertBefore(
+              draggedMediaCard,
+              card.nextSibling
+            );
+
+          }
+
+
+          updateMediaOrderNumbers();
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* ==================================================
+   CẬP NHẬT SỐ THỨ TỰ
+================================================== */
+
+function updateMediaOrderNumbers(){
+
+  const cards =
+    document.querySelectorAll(
+      "#mediaGrid .media-card"
+    );
+
+
+  cards.forEach(
+    function(card,index){
+
+      const order =
+        card.querySelector(
+          ".media-order"
+        );
+
+
+      if(order){
+
+        order.textContent =
+          `☰ Kéo để đổi vị trí · #${index + 1}`;
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ==================================================
+   LẤY THỨ TỰ HIỆN TẠI
+================================================== */
+
+function getMediaOrder(){
+
+  const cards =
+    document.querySelectorAll(
+      "#mediaGrid .media-card"
+    );
+
+
+  return Array
+    .from(cards)
+    .map(
+      function(card){
+
+        return String(
+          card.dataset.filename ||
+          ""
+        ).trim();
+
+      }
+    )
+    .filter(
+      Boolean
+    );
+
+}
+
+
+/* ==================================================
+   LƯU THỨ TỰ MEDIA
+================================================== */
+
+async function saveMediaOrder(){
+
+  const message =
+    document.getElementById(
+      "uploadMsg"
+    );
+
+
+  const order =
+    getMediaOrder();
+
+
+  if(!order.length){
+
+    if(message){
+
+      message.textContent =
+        "Chưa có ảnh/video để sắp xếp.";
+
+    }
+
+    return;
+
+  }
+
+
+  try{
+
+    if(message){
+
+      message.textContent =
+        "⏳ Đang lưu thứ tự...";
+
+    }
+
+
+    const response =
+      await fetch(
+        "/api/gallery/order",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              order
+            })
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error ||
+        "Không thể lưu thứ tự."
+      );
+
+    }
+
+
+    if(message){
+
+      message.innerHTML = `
+
+        <span class="ok">
+          ✅ Đã lưu thứ tự ảnh/video.
+        </span>
+
+      `;
+
+    }
+
+
+    /*
+      Tải lại danh sách để xác nhận
+      thứ tự trên giao diện trùng
+      với thứ tự server đã lưu.
+    */
+
+    await loadMedia();
+
+
+    setTimeout(
+      function(){
+
+        if(message){
+
+          message.textContent =
+            "";
+
+        }
+
+      },
+      2500
+    );
+
+
+  }catch(e){
+
+    if(message){
+
+      message.textContent =
+        "❌ " +
+        e.message;
+
+    }
+
+  }
+
+}
+
+
+/* ==================================================
    NOTIFY
-   ========================= */
+================================================== */
 
 async function loadNotify(){
 
   try{
 
     const s =
-      await api("/api/settings");
+      await api(
+        "/api/settings"
+      );
 
 
-    document.getElementById("webhook")
+    document
+      .getElementById(
+        "webhook"
+      )
       .value =
-        s.notifyWebhook || "";
+        s.notifyWebhook ||
+        "";
 
 
-    document.getElementById(
-      "notifyEnabled"
-    ).checked =
-      !!s.notifyEnabled;
+    document
+      .getElementById(
+        "notifyEnabled"
+      )
+      .checked =
+        !!s.notifyEnabled;
 
 
   }catch(e){}
@@ -1759,50 +2685,66 @@ async function saveNotify(){
 
         body:
           JSON.stringify({
+
             notifyWebhook:
-              document.getElementById(
-                "webhook"
-              ).value,
+              document
+                .getElementById(
+                  "webhook"
+                )
+                .value,
 
             notifyEnabled:
-              document.getElementById(
-                "notifyEnabled"
-              ).checked
+              document
+                .getElementById(
+                  "notifyEnabled"
+                )
+                .checked
+
           })
       }
     );
 
 
-    document.getElementById(
-      "notifyMsg"
-    ).textContent =
-      " ✓ Đã lưu";
-
-
-    setTimeout(function(){
-
-      document.getElementById(
+    document
+      .getElementById(
         "notifyMsg"
-      ).textContent = "";
+      )
+      .textContent =
+        " ✓ Đã lưu";
 
-    },2500);
+
+    setTimeout(
+      function(){
+
+        document
+          .getElementById(
+            "notifyMsg"
+          )
+          .textContent =
+            "";
+
+      },
+      2500
+    );
 
 
   }catch(e){
 
-    document.getElementById(
-      "notifyMsg"
-    ).textContent =
-      e.message;
+    document
+      .getElementById(
+        "notifyMsg"
+      )
+      .textContent =
+        e.message;
 
   }
 
 }
 
 
-/* =========================
+/* ==================================================
    LOGOUT
-   ========================= */
+================================================== */
 
 async function logout(){
 
@@ -1813,14 +2755,15 @@ async function logout(){
     }
   );
 
+
   location.reload();
 
 }
 
 
-/* =========================
+/* ==================================================
    START
-   ========================= */
+================================================== */
 
 check();
 
